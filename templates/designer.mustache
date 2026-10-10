@@ -1,0 +1,154 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template local_avatar/designer
+
+    The "My VR avatar" designer: a 3D preview and the choices as labelled radio groups. Without
+    JavaScript the form posts to the page; with it, local_avatar/designer saves through the web
+    service, draws the preview and shows the Reset and camera preview buttons.
+
+    Classes required for JS:
+    * none (data-region and data-action attributes)
+
+    Context variables required for this template:
+    * actionurl - where the form posts without JavaScript
+    * sesskey - session key
+    * groups - list of {name, id, legend, isswatch, options: [{value, id, label, checked, swatch}]}
+    * glasses - whether glasses are chosen
+    * picture - whether the profile picture is chosen
+    * pictureallowed - whether the site allows profile pictures on avatars
+    * haspicture - whether the user has a profile picture to show
+    * hasdesign - whether the user has saved a design
+
+    Example context (json):
+    {
+        "actionurl": "https://example.org/local/avatar/index.php",
+        "sesskey": "abc123",
+        "groups": [
+            {
+                "name": "body",
+                "id": "local-avatar-group-body",
+                "legend": "Body shape",
+                "isswatch": false,
+                "options": [
+                    {"value": "capsule", "id": "local-avatar-body-capsule", "label": "Capsule", "checked": true, "swatch": ""},
+                    {"value": "slim", "id": "local-avatar-body-slim", "label": "Slim", "checked": false, "swatch": ""}
+                ]
+            },
+            {
+                "name": "color",
+                "id": "local-avatar-group-color",
+                "legend": "Body colour",
+                "isswatch": true,
+                "options": [
+                    {"value": "red", "id": "local-avatar-color-red", "label": "Red", "checked": false, "swatch": "#d32f2f"},
+                    {"value": "blue", "id": "local-avatar-color-blue", "label": "Blue", "checked": true, "swatch": "#1976d2"}
+                ]
+            }
+        ],
+        "glasses": false,
+        "picture": true,
+        "pictureallowed": true,
+        "haspicture": true,
+        "hasdesign": true
+    }
+}}
+<div class="local-avatar" data-region="local-avatar-designer">
+    <p>{{#str}}intro, local_avatar{{/str}}</p>
+    <p>{{#str}}whosees, local_avatar{{/str}}</p>
+    {{^hasdesign}}
+        <div class="alert alert-info" data-region="nodesign">{{#str}}nodesign, local_avatar{{/str}}</div>
+    {{/hasdesign}}
+
+    <div class="local-avatar-layout">
+        <div class="local-avatar-preview">
+            <h3 class="h5">{{#str}}preview, local_avatar{{/str}}</h3>
+            <div class="local-avatar-stage" data-region="stage">
+                <canvas class="local-avatar-canvas" data-region="canvas" tabindex="0" role="img"
+                    aria-label="{{#str}}previewlabel, local_avatar{{/str}}"
+                    aria-describedby="local-avatar-previewhelp" hidden></canvas>
+                <p class="local-avatar-fallback" data-region="fallback">{{#str}}previewunavailable, local_avatar{{/str}}</p>
+            </div>
+            <p class="small text-muted" id="local-avatar-previewhelp" data-region="previewhelp" hidden>
+                {{#str}}previewhelp, local_avatar{{/str}}
+            </p>
+            <button type="button" class="btn btn-secondary btn-sm" data-action="camera" aria-pressed="false" hidden>
+                {{#str}}camerapreview, local_avatar{{/str}}
+            </button>
+        </div>
+
+        <div class="local-avatar-choices">
+            <form method="post" action="{{actionurl}}" data-region="form">
+                <input type="hidden" name="sesskey" value="{{sesskey}}">
+                <input type="hidden" name="action" value="save">
+                {{#groups}}
+                    <fieldset class="local-avatar-group{{#isswatch}} local-avatar-swatches{{/isswatch}}" id="{{id}}">
+                        <legend class="h6">{{legend}}</legend>
+                        {{#options}}
+                            <div class="form-check form-check-inline local-avatar-option">
+                                <input class="form-check-input" type="radio" name="{{name}}" value="{{value}}" id="{{id}}"
+                                    {{#checked}}checked{{/checked}}>
+                                <label class="form-check-label" for="{{id}}">
+                                    {{#swatch}}
+                                        <span class="local-avatar-swatch" data-swatch="{{value}}" style="background-color: {{swatch}};"
+                                            aria-hidden="true"></span>
+                                    {{/swatch}}
+                                    {{label}}
+                                </label>
+                            </div>
+                        {{/options}}
+                    </fieldset>
+                {{/groups}}
+
+                <fieldset class="local-avatar-group" id="local-avatar-group-extras">
+                    <legend class="h6">{{#str}}extras, local_avatar{{/str}}</legend>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="glasses" value="1" id="local-avatar-glasses"
+                            {{#glasses}}checked{{/glasses}}>
+                        <label class="form-check-label" for="local-avatar-glasses">{{#str}}glasses, local_avatar{{/str}}</label>
+                    </div>
+                    {{#pictureallowed}}
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="picture" value="1" id="local-avatar-picture"
+                                aria-describedby="local-avatar-picture-help" {{#picture}}checked{{/picture}}>
+                            <label class="form-check-label" for="local-avatar-picture">{{#str}}picture, local_avatar{{/str}}</label>
+                            <div class="form-text text-muted" id="local-avatar-picture-help">
+                                {{#str}}picture_help, local_avatar{{/str}}
+                                {{^haspicture}}{{#str}}picturenone, local_avatar{{/str}}{{/haspicture}}
+                            </div>
+                        </div>
+                    {{/pictureallowed}}
+                    {{^pictureallowed}}
+                        <p class="text-muted mb-0">{{#str}}picturedisabled, local_avatar{{/str}}</p>
+                    {{/pictureallowed}}
+                </fieldset>
+
+                <div class="local-avatar-buttons">
+                    <button type="submit" class="btn btn-primary" data-action="save">{{#str}}save, local_avatar{{/str}}</button>
+                    <button type="button" class="btn btn-secondary" data-action="reset" hidden>{{#str}}reset, local_avatar{{/str}}</button>
+                </div>
+                <p class="local-avatar-status" data-region="status" role="status" aria-live="polite"></p>
+            </form>
+
+            <form method="post" action="{{actionurl}}" data-region="removeform"{{^hasdesign}} hidden{{/hasdesign}}>
+                <input type="hidden" name="sesskey" value="{{sesskey}}">
+                <input type="hidden" name="action" value="remove">
+                <button type="submit" class="btn btn-link px-0">{{#str}}remove, local_avatar{{/str}}</button>
+            </form>
+        </div>
+    </div>
+</div>

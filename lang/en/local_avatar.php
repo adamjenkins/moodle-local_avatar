@@ -1,0 +1,99 @@
+<?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * English strings for local_avatar.
+ *
+ * @package    local_avatar
+ * @copyright  2026 Adam Jenkins <adam@wisecat.net>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
+defined('MOODLE_INTERNAL') || die();
+
+$string['accent'] = 'Accent colour';
+$string['allowpicture'] = 'Profile picture on avatars';
+$string['allowpicture_desc'] = 'Let users show their profile picture on their avatar. A user who chooses it gets their normal Moodle profile picture as a round badge on the face of their avatar, and the other people in the same live room of a VR room activity receive the address of that picture.';
+$string['avatar:edit'] = 'Design your own VR avatar';
+$string['body'] = 'Body shape';
+$string['body_broad'] = 'Broad';
+$string['body_capsule'] = 'Capsule';
+$string['body_slim'] = 'Slim';
+$string['camera_error'] = 'The camera could not be started. Check that this site may use your camera, and that no other program is using it.';
+$string['camera_off'] = 'Camera preview off.';
+$string['camera_on'] = 'Camera preview on. Your video stays in this browser: nothing is sent.';
+$string['camerapreview'] = 'Try my camera on the preview';
+$string['camerapreviewstop'] = 'Stop the camera preview';
+$string['color'] = 'Body colour';
+$string['colour_blue'] = 'Blue';
+$string['colour_brown'] = 'Brown';
+$string['colour_cyan'] = 'Cyan';
+$string['colour_green'] = 'Green';
+$string['colour_grey'] = 'Grey';
+$string['colour_indigo'] = 'Indigo';
+$string['colour_orange'] = 'Orange';
+$string['colour_pink'] = 'Pink';
+$string['colour_purple'] = 'Purple';
+$string['colour_red'] = 'Red';
+$string['colour_teal'] = 'Teal';
+$string['colour_yellow'] = 'Yellow';
+$string['extras'] = 'Extras';
+$string['glasses'] = 'Glasses';
+$string['hair'] = 'Hair';
+$string['hair_bun'] = 'Bun';
+$string['hair_long'] = 'Long';
+$string['hair_none'] = 'No hair';
+$string['hair_short'] = 'Short';
+$string['haircolor'] = 'Hair colour';
+$string['haircolour_auburn'] = 'Auburn';
+$string['haircolour_black'] = 'Black';
+$string['haircolour_blonde'] = 'Blonde';
+$string['haircolour_brown'] = 'Brown';
+$string['haircolour_grey'] = 'Grey';
+$string['haircolour_white'] = 'White';
+$string['hat'] = 'Hat';
+$string['hat_beanie'] = 'Beanie';
+$string['hat_cap'] = 'Cap';
+$string['hat_none'] = 'No hat';
+$string['hat_sunhat'] = 'Sun hat';
+$string['head'] = 'Head shape';
+$string['head_round'] = 'Round';
+$string['head_square'] = 'Rounded square';
+$string['intro'] = 'Choose how you look to others in the live rooms of VR room activities. The same avatar is used in every live room on this site, in all your courses.';
+$string['myavatar'] = 'My VR avatar';
+$string['nodesign'] = 'You have not saved an avatar yet, so you have the standard look: a simple figure in a colour picked for you.';
+$string['picture'] = 'Show my profile picture on my avatar';
+$string['picture_help'] = 'Shows your Moodle profile picture as a round badge on the face of your avatar, when your camera is off.';
+$string['picturedisabled'] = 'The site does not show profile pictures on avatars.';
+$string['picturenone'] = 'You have no profile picture yet, so no badge is shown.';
+$string['pluginname'] = 'VR avatar';
+$string['preview'] = 'Preview';
+$string['previewhelp'] = 'Drag the preview, or use the left and right arrow keys, to turn it.';
+$string['previewlabel'] = '3D preview of your avatar';
+$string['previewunavailable'] = 'This browser cannot show the 3D preview. Your choices are saved and used all the same.';
+$string['privacy:metadata:liveroomparticipants'] = 'In a live room of a VR room activity, the other people in the same room receive your avatar design, next to your name, and the address of your profile picture if you chose to show it and the site allows it.';
+$string['privacy:metadata:liveroomparticipants:appearance'] = 'Your avatar design.';
+$string['privacy:metadata:liveroomparticipants:picture'] = 'The address of your profile picture.';
+$string['privacy:metadata:preference:design'] = 'Your avatar design: body, head, colours, hair, glasses, hat and whether to show your profile picture.';
+$string['privacy:preference:design'] = 'Your VR avatar design';
+$string['remove'] = 'Stop using my avatar (standard look)';
+$string['removed'] = 'Your avatar was removed. You have the standard look again.';
+$string['reset'] = 'Reset to default';
+$string['resetdone'] = 'The default choices are back in the form. Press Save to keep them.';
+$string['save'] = 'Save';
+$string['saved'] = 'Your avatar was saved.';
+$string['saving'] = 'Saving...';
+$string['whosees'] = 'Only the people in the same live room as you see your avatar, next to your name. If you turn on your camera in a live room, they see your video on the face of your avatar instead.';
