@@ -1,6 +1,6 @@
 # VR avatar — your own avatar for VR room live rooms
 
-VR avatar (`local_avatar`) lets each user design the avatar that stands for them in the live rooms
+VR avatar (`local_vravatar`) lets each user design the avatar that stands for them in the live rooms
 of [VR room](https://github.com/adamjenkins/moodle-mod_vrroom) activities. A user designs it once,
 on their own **My VR avatar** page, and the same avatar follows them into every live room on the
 site, in all their courses.
@@ -53,31 +53,31 @@ choices are saved and used all the same. Without JavaScript the form still saves
 
 ## Installation
 
-1. Copy this repository to `public/local/avatar` in your Moodle code (Moodle 5.x keeps plugins
+1. Copy this repository to `public/local/vravatar` in your Moodle code (Moodle 5.x keeps plugins
    under `public/`).
 2. Visit *Site administration > Notifications* to install it.
 3. Optionally review *Site administration > Plugins > Local plugins > VR avatar*.
 
 Users find **My VR avatar** on their own profile page (*Miscellaneous*), or at
-`/local/avatar/index.php`. A site that wants it in the user menu can add
-`My VR avatar|/local/avatar/index.php` to *Appearance > Navigation > User menu items*.
+`/local/vravatar/index.php`. A site that wants it in the user menu can add
+`My VR avatar|/local/vravatar/index.php` to *Appearance > Navigation > User menu items*.
 
 ## Settings
 
 | Setting | Default | What it does |
 |---|---|---|
-| Profile picture on avatars (`local_avatar/allowpicture`) | on | Lets users show their profile picture on their avatar. When off, nobody's picture is sent to live rooms; the users' own choice is kept for when it is turned on again. |
+| Profile picture on avatars (`local_vravatar/allowpicture`) | on | Lets users show their profile picture on their avatar. When off, nobody's picture is sent to live rooms; the users' own choice is kept for when it is turned on again. |
 
-Capability `local/avatar:edit` (user context, allowed for the authenticated user role): design your
+Capability `local/vravatar:edit` (user context, allowed for the authenticated user role): design your
 own avatar. Nobody can edit another person's avatar.
 
 ## How it works
 
-The design is stored as one user preference, `local_avatar_design`: a small JSON document
+The design is stored as one user preference, `local_vravatar_design`: a small JSON document
 (`vrroom-avatar/1`, at most 2 KB) with only the allowed keys and names above. It is cleaned
 against that allowlist when it is saved and again whenever it is read: unknown keys and values
-are dropped. It is saved through the plugin's own web service, `local_avatar_save_design`, which
-saves only for the current user (`local_avatar_get_design` reads it back).
+are dropped. It is saved through the plugin's own web service, `local_vravatar_save_design`, which
+saves only for the current user (`local_vravatar_get_design` reads it back).
 
 When VR room builds the list of the people in one live room it dispatches the
 `\mod_vrroom\hook\avatar_appearance` hook. This plugin listens and fills in the saved design of each
@@ -85,13 +85,13 @@ person in the list, and the address of their normal Moodle profile picture when 
 the user chose it and the user has a picture (an uploaded one, or a Gravatar where the site uses
 them). So a person's design reaches only the people in the same live room, next to the name VR room
 already shows them. A design with a costume, or the pirate hat, also gives the addresses of those
-models (`/local/avatar/costumes/<id>.glb`), which the avatar builder loads.
+models (`/local/vravatar/costumes/<id>.glb`), which the avatar builder loads.
 
 The costume models are static files of this plugin: `costumes/<id>.glb`, listed in
 `costumes/costumes.json` (id, kind, category, credit, licence, source, whether it takes the accent
 colour, thumbnail), with thumbnails in `pix/costumes/<id>.png`. The web server serves them like the
 plugin's other static files (with Moodle 5.x's `public/` layout the plugin is at
-`public/local/avatar`, the site's document root, so the address is `<wwwroot>/local/avatar/costumes/<id>.glb`).
+`public/local/vravatar`, the site's document root, so the address is `<wwwroot>/local/vravatar/costumes/<id>.glb`).
 A server that refuses unknown file types should serve `.glb` as `model/gltf-binary` (or
 `application/octet-stream`, as nginx and Apache do by default).
 
@@ -105,7 +105,7 @@ avatar around the video looks.
 
 ## Privacy
 
-- Stored: the user preference `local_avatar_design` (the design).
+- Stored: the user preference `local_vravatar_design` (the design).
 - Shared: the other participants of a live room receive the design and, if chosen and allowed, the
   address of the profile picture, while they are in the same room. Nothing is sent outside the
   site by this plugin.

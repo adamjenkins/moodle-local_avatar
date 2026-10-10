@@ -14,12 +14,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace local_avatar\local;
+namespace local_vravatar\local;
 
 /**
  * Tests of the costume manifest and the costume models it lists.
  *
- * @package    local_avatar
+ * @package    local_vravatar
  * @category   test
  * @copyright  2026 Adam Jenkins <adam@wisecat.net>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -49,7 +49,7 @@ final class costumes_test extends \advanced_testcase {
      * The manifest is valid JSON, every row of it survives the checks, and it lists the chosen costumes.
      */
     public function test_manifest_lists_every_costume(): void {
-        $dir = \core_component::get_component_directory('local_avatar');
+        $dir = \core_component::get_component_directory('local_vravatar');
         $rows = json_decode(file_get_contents($dir . '/' . costumes::MANIFEST), true);
         $this->assertIsArray($rows);
         $this->assertSame(self::IDS, array_column($rows, 'id'));
@@ -62,15 +62,15 @@ final class costumes_test extends \advanced_testcase {
      * credit naming the author and an https source.
      */
     public function test_every_costume_complete(): void {
-        $dir = \core_component::get_component_directory('local_avatar');
+        $dir = \core_component::get_component_directory('local_vravatar');
         $strings = get_string_manager();
         foreach (costumes::all() as $id => $entry) {
             $this->assertFileExists($dir . '/costumes/' . $id . '.glb', $id);
-            $this->assertStringEndsWith('/local/avatar/costumes/' . $id . '.glb', costumes::model_url($id)->out(false));
+            $this->assertStringEndsWith('/local/vravatar/costumes/' . $id . '.glb', costumes::model_url($id)->out(false));
             $this->assertSame('pix/costumes/' . $id . '.png', $entry['thumb'], $id);
             $this->assertFileExists($dir . '/' . $entry['thumb'], $id);
-            $this->assertTrue($strings->string_exists(costumes::name_string($id), 'local_avatar'), $id);
-            $this->assertTrue($strings->string_exists('costumecat_' . $entry['category'], 'local_avatar'), $id);
+            $this->assertTrue($strings->string_exists(costumes::name_string($id), 'local_vravatar'), $id);
+            $this->assertTrue($strings->string_exists('costumecat_' . $entry['category'], 'local_vravatar'), $id);
             $this->assertContains($entry['licence'], ['CC0-1.0', 'CC-BY-3.0', 'CC-BY-4.0'], $id);
             $this->assertNotSame('', trim($entry['credit']), $id);
             $this->assertStringContainsString($entry['author'], $entry['credit'], $id);
@@ -85,7 +85,7 @@ final class costumes_test extends \advanced_testcase {
      */
     public function test_categories_and_attribution(): void {
         foreach (costumes::CATEGORIES as $category) {
-            $this->assertTrue(get_string_manager()->string_exists('costumecat_' . $category, 'local_avatar'), $category);
+            $this->assertTrue(get_string_manager()->string_exists('costumecat_' . $category, 'local_vravatar'), $category);
         }
         $credited = array_keys(array_filter(costumes::all(), [costumes::class, 'needs_attribution']));
         $this->assertSame(['hat-pirate', 'suit-tie', 'device-computer'], $credited);
@@ -96,7 +96,7 @@ final class costumes_test extends \advanced_testcase {
      * Every model is credited in thirdpartylibs.xml with its licence and source.
      */
     public function test_thirdpartylibs_lists_every_model(): void {
-        $dir = \core_component::get_component_directory('local_avatar');
+        $dir = \core_component::get_component_directory('local_vravatar');
         $xml = simplexml_load_file($dir . '/thirdpartylibs.xml');
         $this->assertNotFalse($xml);
         $libraries = [];
@@ -139,8 +139,8 @@ final class costumes_test extends \advanced_testcase {
 
         $assets = costumes::assets_for(design::clean(['outfit' => 'device-laptop', 'hat' => 'pirate']));
         $this->assertSame(['outfit', 'hat'], array_keys($assets));
-        $this->assertSame((new \moodle_url('/local/avatar/costumes/device-laptop.glb'))->out(false), $assets['outfit']);
-        $this->assertSame((new \moodle_url('/local/avatar/costumes/hat-pirate.glb'))->out(false), $assets['hat']);
+        $this->assertSame((new \moodle_url('/local/vravatar/costumes/device-laptop.glb'))->out(false), $assets['outfit']);
+        $this->assertSame((new \moodle_url('/local/vravatar/costumes/hat-pirate.glb'))->out(false), $assets['hat']);
 
         // A raw, uncleaned value never becomes a path.
         $this->assertSame([], costumes::assets_for(['outfit' => '../../config', 'hat' => 'hat-pirate']));

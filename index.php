@@ -17,15 +17,15 @@
 /**
  * "My VR avatar": the current user designs their own avatar for the live rooms of VR room.
  *
- * With JavaScript the form saves through the local_avatar_save_design web service; without it the
+ * With JavaScript the form saves through the local_vravatar_save_design web service; without it the
  * form posts here.
  *
- * @package    local_avatar
+ * @package    local_vravatar
  * @copyright  2026 Adam Jenkins <adam@wisecat.net>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-use local_avatar\local\design;
+use local_vravatar\local\design;
 
 require(__DIR__ . '/../../config.php');
 
@@ -34,10 +34,10 @@ if (isguestuser()) {
     throw new \moodle_exception('noguest');
 }
 $context = \context_user::instance((int)$USER->id);
-require_capability('local/avatar:edit', $context);
+require_capability('local/vravatar:edit', $context);
 
-$url = new \core\url('/local/avatar/index.php');
-$title = get_string('myavatar', 'local_avatar');
+$url = new \core\url('/local/vravatar/index.php');
+$title = get_string('myavatar', 'local_vravatar');
 $PAGE->set_url($url);
 $PAGE->set_context($context);
 $PAGE->set_pagelayout('standard');
@@ -51,7 +51,7 @@ $action = optional_param('action', '', PARAM_ALPHA);
 if ($action === 'remove') {
     require_sesskey();
     design::remove($userid);
-    redirect($url, get_string('removed', 'local_avatar'), null, \core\output\notification::NOTIFY_SUCCESS);
+    redirect($url, get_string('removed', 'local_vravatar'), null, \core\output\notification::NOTIFY_SUCCESS);
 } else if ($action === 'save') {
     require_sesskey();
     $input = [];
@@ -65,7 +65,7 @@ if ($action === 'remove') {
         ? optional_param('picture', 0, PARAM_BOOL)
         : (bool)(design::load($userid)['picture'] ?? false);
     design::save($userid, $input);
-    redirect($url, get_string('saved', 'local_avatar'), null, \core\output\notification::NOTIFY_SUCCESS);
+    redirect($url, get_string('saved', 'local_vravatar'), null, \core\output\notification::NOTIFY_SUCCESS);
 }
 
 $saved = design::load($userid);
@@ -73,14 +73,14 @@ $current = $saved ?? design::defaults();
 $user = \core_user::get_user($userid, design::picture_fields(), MUST_EXIST);
 $pictureurl = design::picture_url($user, $PAGE);
 
-$designer = new \local_avatar\output\designer($current, $saved !== null, $pictureallowed, $pictureurl !== '', $url);
-$PAGE->requires->js_call_amd('local_avatar/designer', 'init', [[
+$designer = new \local_vravatar\output\designer($current, $saved !== null, $pictureallowed, $pictureurl !== '', $url);
+$PAGE->requires->js_call_amd('local_vravatar/designer', 'init', [[
     'design' => $current,
     'defaults' => design::defaults(),
     'pictureurl' => $pictureurl,
     'pictureallowed' => $pictureallowed,
     'name' => fullname($USER),
-    'seed' => 'local-avatar-' . $userid,
+    'seed' => 'local-vravatar-' . $userid,
 ]]);
 
 echo $OUTPUT->header();

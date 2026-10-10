@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace local_avatar\local;
+namespace local_vravatar\local;
 
 /**
  * The costumes this plugin ships: the manifest costumes/costumes.json and the models next to it.
@@ -24,7 +24,7 @@ namespace local_avatar\local;
  * its kind ("body": it replaces the body, "device": it replaces head and body and shows the face on
  * its screen, "accessory": a hat), its category on the designer page, its credit and licence.
  *
- * @package    local_avatar
+ * @package    local_vravatar
  * @copyright  2026 Adam Jenkins <adam@wisecat.net>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -66,7 +66,7 @@ final class costumes {
             return self::$manifest;
         }
         $manifest = [];
-        $file = \core_component::get_component_directory('local_avatar') . '/' . self::MANIFEST;
+        $file = \core_component::get_component_directory('local_vravatar') . '/' . self::MANIFEST;
         $rows = is_readable($file) ? json_decode((string)file_get_contents($file), true) : null;
         foreach (is_array($rows) ? $rows : [] as $row) {
             $entry = self::clean_entry($row);
@@ -163,7 +163,7 @@ final class costumes {
      * @return \moodle_url
      */
     public static function model_url(string $id): \moodle_url {
-        return new \moodle_url('/local/avatar/costumes/' . $id . '.glb');
+        return new \moodle_url('/local/vravatar/costumes/' . $id . '.glb');
     }
 
     /**

@@ -14,12 +14,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace local_avatar\local;
+namespace local_vravatar\local;
 
 /**
  * Tests of the avatar design allowlist and its storage.
  *
- * @package    local_avatar
+ * @package    local_vravatar
  * @category   test
  * @copyright  2026 Adam Jenkins <adam@wisecat.net>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -119,8 +119,8 @@ final class design_test extends \advanced_testcase {
         $this->assertSame('white', design::clean(['accent' => 'white'])['accent']);
         $this->assertMatchesRegularExpression('/^#[0-9a-f]{6}$/', design::SWATCHES['black']);
         $this->assertMatchesRegularExpression('/^#[0-9a-f]{6}$/', design::SWATCHES['white']);
-        $this->assertSame('Black', get_string('colour_black', 'local_avatar'));
-        $this->assertSame('White', get_string('colour_white', 'local_avatar'));
+        $this->assertSame('Black', get_string('colour_black', 'local_vravatar'));
+        $this->assertSame('White', get_string('colour_white', 'local_vravatar'));
     }
 
     /**
@@ -300,9 +300,9 @@ final class design_test extends \advanced_testcase {
     public function test_picture_allowed(): void {
         $this->resetAfterTest();
         $this->assertTrue(design::picture_allowed());
-        unset_config('allowpicture', 'local_avatar');
+        unset_config('allowpicture', 'local_vravatar');
         $this->assertTrue(design::picture_allowed());
-        set_config('allowpicture', 0, 'local_avatar');
+        set_config('allowpicture', 0, 'local_vravatar');
         $this->assertFalse(design::picture_allowed());
     }
 

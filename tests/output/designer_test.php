@@ -14,15 +14,15 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace local_avatar\output;
+namespace local_vravatar\output;
 
-use local_avatar\local\costumes;
-use local_avatar\local\design;
+use local_vravatar\local\costumes;
+use local_vravatar\local\design;
 
 /**
  * Tests of the designer page's template data.
  *
- * @package    local_avatar
+ * @package    local_vravatar
  * @category   test
  * @copyright  2026 Adam Jenkins <adam@wisecat.net>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -37,16 +37,16 @@ final class designer_test extends \advanced_testcase {
         global $PAGE;
         $this->resetAfterTest();
         $current = design::clean(['skin' => 'dark', 'hair' => 'mohawk', 'ears' => true, 'beard' => 'stubble']);
-        $designer = new designer($current, true, true, false, new \core\url('/local/avatar/index.php'));
+        $designer = new designer($current, true, true, false, new \core\url('/local/vravatar/index.php'));
         $data = $designer->export_for_template($PAGE->get_renderer('core'));
 
         $this->assertSame(
             [
-                get_string('section_head', 'local_avatar'),
-                get_string('section_hair', 'local_avatar'),
-                get_string('section_body', 'local_avatar'),
-                get_string('section_costume', 'local_avatar'),
-                get_string('section_extras', 'local_avatar'),
+                get_string('section_head', 'local_vravatar'),
+                get_string('section_hair', 'local_vravatar'),
+                get_string('section_body', 'local_vravatar'),
+                get_string('section_costume', 'local_vravatar'),
+                get_string('section_extras', 'local_vravatar'),
             ],
             array_column($data['sections'], 'heading')
         );
@@ -81,12 +81,12 @@ final class designer_test extends \advanced_testcase {
         // Skin tones are named swatches; "match" has no swatch of its own.
         $this->assertTrue($radios['skin']['isswatch']);
         $this->assertSame('', $radios['skin']['options'][0]['swatch']);
-        $this->assertSame(get_string('skin_match', 'local_avatar'), $radios['skin']['options'][0]['label']);
+        $this->assertSame(get_string('skin_match', 'local_vravatar'), $radios['skin']['options'][0]['label']);
         $this->assertSame('skin', $radios['skin']['options'][1]['palette']);
 
         // The pirate hat is a model, with its CC BY credit; the drawn hats are not.
         $hats = array_column($radios['hat']['options'], null, 'value');
-        $this->assertStringEndsWith('/local/avatar/costumes/hat-pirate.glb', $hats['pirate']['model']);
+        $this->assertStringEndsWith('/local/vravatar/costumes/hat-pirate.glb', $hats['pirate']['model']);
         $this->assertStringContainsString('Poly by Google', $hats['pirate']['credit']);
         $this->assertStringContainsString('CC BY 3.0', $hats['pirate']['credit']);
         $this->assertSame('', $hats['cap']['model']);
@@ -101,17 +101,17 @@ final class designer_test extends \advanced_testcase {
         global $PAGE;
         $this->resetAfterTest();
         $current = design::clean(['outfit' => 'suit-tie']);
-        $designer = new designer($current, true, true, false, new \core\url('/local/avatar/index.php'));
+        $designer = new designer($current, true, true, false, new \core\url('/local/vravatar/index.php'));
         $data = $designer->export_for_template($PAGE->get_renderer('core'));
 
         $section = $data['sections'][3];
-        $this->assertSame('local-avatar-section-costume', $section['id']);
+        $this->assertSame('local-vravatar-section-costume', $section['id']);
         $picker = $section['items'][0]['costume'];
         $this->assertSame('outfit', $picker['name']);
         $this->assertSame('none', $picker['none']['value']);
         $this->assertFalse($picker['none']['checked']);
 
-        $categories = array_map(fn($c) => substr($c['id'], strlen('local-avatar-costumes-')), $picker['categories']);
+        $categories = array_map(fn($c) => substr($c['id'], strlen('local-vravatar-costumes-')), $picker['categories']);
         $this->assertSame(costumes::CATEGORIES, $categories);
 
         $options = [];
@@ -123,9 +123,9 @@ final class designer_test extends \advanced_testcase {
         }
         $this->assertSame(costumes::outfit_ids(), array_keys($options));
         foreach ($options as $id => $option) {
-            $this->assertSame(get_string(costumes::name_string($id), 'local_avatar'), $option['label']);
+            $this->assertSame(get_string(costumes::name_string($id), 'local_vravatar'), $option['label']);
             $this->assertStringContainsString('costumes/' . $id, $option['thumb']);
-            $this->assertStringEndsWith('/local/avatar/costumes/' . $id . '.glb', $option['model']);
+            $this->assertStringEndsWith('/local/vravatar/costumes/' . $id . '.glb', $option['model']);
             $this->assertSame($id === 'suit-tie', $option['checked'], $id);
             $this->assertSame(costumes::needs_attribution(costumes::get($id)), $option['credit'] !== '', $id);
         }
@@ -144,17 +144,17 @@ final class designer_test extends \advanced_testcase {
     public function test_template_renders(): void {
         global $PAGE;
         $this->resetAfterTest();
-        $PAGE->set_url(new \core\url('/local/avatar/index.php'));
+        $PAGE->set_url(new \core\url('/local/vravatar/index.php'));
         $output = $PAGE->get_renderer('core');
-        $designer = new designer(design::clean([]), true, true, false, new \core\url('/local/avatar/index.php'));
-        $html = $output->render_from_template('local_avatar/designer', $designer->export_for_template($output));
+        $designer = new designer(design::clean([]), true, true, false, new \core\url('/local/vravatar/index.php'));
+        $html = $output->render_from_template('local_vravatar/designer', $designer->export_for_template($output));
 
         $this->assertStringNotContainsString('Example context', $html);
         $this->assertStringNotContainsString('@template', $html);
-        $this->assertMatchesRegularExpression('~<form method="post" action="[^"]*/local/avatar/index\.php"~', $html);
+        $this->assertMatchesRegularExpression('~<form method="post" action="[^"]*/local/vravatar/index\.php"~', $html);
         $this->assertMatchesRegularExpression('~data-action="zoom"[^>]*\shidden>~', $html);
         $this->assertMatchesRegularExpression('~data-action="zoom"[^>]*aria-pressed="false"~', $html);
-        $this->assertStringContainsString(get_string('showwhole', 'local_avatar'), $html);
+        $this->assertStringContainsString(get_string('showwhole', 'local_vravatar'), $html);
     }
 
     /**
@@ -165,46 +165,46 @@ final class designer_test extends \advanced_testcase {
     public function test_template_renders_costumes(): void {
         global $PAGE;
         $this->resetAfterTest();
-        $PAGE->set_url(new \core\url('/local/avatar/index.php'));
+        $PAGE->set_url(new \core\url('/local/vravatar/index.php'));
         $output = $PAGE->get_renderer('core');
         $designer = new designer(
             design::clean(['outfit' => 'device-laptop', 'hat' => 'pirate']),
             true,
             true,
             false,
-            new \core\url('/local/avatar/index.php')
+            new \core\url('/local/vravatar/index.php')
         );
-        $html = $output->render_from_template('local_avatar/designer', $designer->export_for_template($output));
+        $html = $output->render_from_template('local_vravatar/designer', $designer->export_for_template($output));
 
-        $this->assertStringContainsString(get_string('section_costume', 'local_avatar'), $html);
+        $this->assertStringContainsString(get_string('section_costume', 'local_vravatar'), $html);
         $this->assertMatchesRegularExpression(
-            '~<input class="form-check-input" type="radio" name="outfit" value="none" id="local-avatar-outfit-none"~',
+            '~<input class="form-check-input" type="radio" name="outfit" value="none" id="local-vravatar-outfit-none"~',
             $html
         );
         foreach (costumes::outfit_ids() as $id) {
             $this->assertMatchesRegularExpression(
-                '~<input class="local-avatar-costume-input" type="radio" name="outfit"\s+value="' . preg_quote($id, '~') .
-                    '" id="local-avatar-outfit-' . preg_quote($id, '~') . '" data-model="[^"]*/local/avatar/costumes/' .
+                '~<input class="local-vravatar-costume-input" type="radio" name="outfit"\s+value="' . preg_quote($id, '~') .
+                    '" id="local-vravatar-outfit-' . preg_quote($id, '~') . '" data-model="[^"]*/local/vravatar/costumes/' .
                     preg_quote($id, '~') . '\.glb"~',
                 $html,
                 $id
             );
             $this->assertStringContainsString(
-                '<label class="local-avatar-costume-label" for="local-avatar-outfit-' . $id . '">',
+                '<label class="local-vravatar-costume-label" for="local-vravatar-outfit-' . $id . '">',
                 $html
             );
         }
-        $this->assertMatchesRegularExpression('~id="local-avatar-outfit-device-laptop"[^>]*\schecked>~', $html);
-        $this->assertMatchesRegularExpression('~<img class="local-avatar-costume-thumb" src="[^"]+" alt=""~', $html);
+        $this->assertMatchesRegularExpression('~id="local-vravatar-outfit-device-laptop"[^>]*\schecked>~', $html);
+        $this->assertMatchesRegularExpression('~<img class="local-vravatar-costume-thumb" src="[^"]+" alt=""~', $html);
         $this->assertMatchesRegularExpression(
-            '~id="local-avatar-hat-pirate"\s+data-model="[^"]*hat-pirate\.glb"\s+checked>~',
+            '~id="local-vravatar-hat-pirate"\s+data-model="[^"]*hat-pirate\.glb"\s+checked>~',
             $html
         );
         $this->assertStringContainsString('by Ian MacGillivray, CC BY 3.0', $html);
         $this->assertStringContainsString('by Robert Schlyter, CC BY 3.0', $html);
         $this->assertStringContainsString('by Poly by Google, CC BY 3.0', $html);
-        $this->assertStringContainsString(get_string('costumecredits', 'local_avatar'), $html);
+        $this->assertStringContainsString(get_string('costumecredits', 'local_vravatar'), $html);
         $this->assertStringContainsString('href="https://kenney.nl/assets/blocky-characters"', $html);
-        $this->assertStringContainsString('aria-describedby="local-avatar-outfit-help"', $html);
+        $this->assertStringContainsString('aria-describedby="local-vravatar-outfit-help"', $html);
     }
 }

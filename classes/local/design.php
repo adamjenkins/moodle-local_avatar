@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace local_avatar\local;
+namespace local_vravatar\local;
 
 /**
  * A user's avatar design: the "vrroom-avatar/1" document, its allowlist and its storage.
@@ -23,7 +23,7 @@ namespace local_avatar\local;
  * cleaned against the allowlist on save and again on read: unknown keys and values are dropped and
  * missing ones take the default, so only names from the fixed lists below ever leave the server.
  *
- * @package    local_avatar
+ * @package    local_vravatar
  * @copyright  2026 Adam Jenkins <adam@wisecat.net>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -32,7 +32,7 @@ final class design {
     public const SCHEMA = 'vrroom-avatar/1';
 
     /** @var string The user preference holding the document. */
-    public const PREFERENCE = 'local_avatar_design';
+    public const PREFERENCE = 'local_vravatar_design';
 
     /** @var int Largest document accepted (bytes of JSON). */
     public const MAXBYTES = 2048;
@@ -317,7 +317,7 @@ final class design {
      * @return bool
      */
     public static function picture_allowed(): bool {
-        $setting = get_config('local_avatar', 'allowpicture');
+        $setting = get_config('local_vravatar', 'allowpicture');
         return $setting === false ? true : !empty($setting);
     }
 

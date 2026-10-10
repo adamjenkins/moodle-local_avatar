@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Library callbacks of local_avatar.
+ * Library callbacks of local_vravatar.
  *
- * @package    local_avatar
+ * @package    local_vravatar
  * @copyright  2026 Adam Jenkins <adam@wisecat.net>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -33,19 +33,19 @@
  * @param stdClass|null $course Course of a course profile, or null.
  * @return void
  */
-function local_avatar_myprofile_navigation(\core_user\output\myprofile\tree $tree, $user, $iscurrentuser, $course): void {
+function local_vravatar_myprofile_navigation(\core_user\output\myprofile\tree $tree, $user, $iscurrentuser, $course): void {
     if (!$iscurrentuser || isguestuser($user) || !isloggedin()) {
         return;
     }
-    if (!has_capability('local/avatar:edit', \context_user::instance((int)$user->id))) {
+    if (!has_capability('local/vravatar:edit', \context_user::instance((int)$user->id))) {
         return;
     }
     $node = new \core_user\output\myprofile\node(
         'miscellaneous',
-        'local_avatar',
-        get_string('myavatar', 'local_avatar'),
+        'local_vravatar',
+        get_string('myavatar', 'local_vravatar'),
         null,
-        new \core\url('/local/avatar/index.php')
+        new \core\url('/local/vravatar/index.php')
     );
     $tree->add_node($node);
 }

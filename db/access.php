@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Capabilities of local_avatar.
+ * Capabilities of local_vravatar.
  *
- * @package    local_avatar
+ * @package    local_vravatar
  * @copyright  2026 Adam Jenkins <adam@wisecat.net>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -26,7 +26,7 @@ defined('MOODLE_INTERNAL') || die();
 
 $capabilities = [
     // Design one's own avatar. Checked in the user's own user context; nobody edits another's avatar.
-    'local/avatar:edit' => [
+    'local/vravatar:edit' => [
         'captype' => 'write',
         'contextlevel' => CONTEXT_USER,
         'archetypes' => [

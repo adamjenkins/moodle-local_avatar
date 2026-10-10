@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Site settings of local_avatar.
+ * Site settings of local_vravatar.
  *
- * @package    local_avatar
+ * @package    local_vravatar
  * @copyright  2026 Adam Jenkins <adam@wisecat.net>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -25,14 +25,14 @@
 defined('MOODLE_INTERNAL') || die();
 
 if ($hassiteconfig) {
-    $settings = new admin_settingpage('local_avatar', new lang_string('pluginname', 'local_avatar'));
+    $settings = new admin_settingpage('local_vravatar', new lang_string('pluginname', 'local_vravatar'));
     $ADMIN->add('localplugins', $settings);
 
     if ($ADMIN->fulltree) {
         $settings->add(new admin_setting_configcheckbox(
-            'local_avatar/allowpicture',
-            new lang_string('allowpicture', 'local_avatar'),
-            new lang_string('allowpicture_desc', 'local_avatar'),
+            'local_vravatar/allowpicture',
+            new lang_string('allowpicture', 'local_vravatar'),
+            new lang_string('allowpicture_desc', 'local_vravatar'),
             1
         ));
     }

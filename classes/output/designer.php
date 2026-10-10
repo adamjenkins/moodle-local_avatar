@@ -14,19 +14,19 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace local_avatar\output;
+namespace local_vravatar\output;
 
 use core\output\renderable;
 use core\output\renderer_base;
 use core\output\templatable;
-use local_avatar\local\costumes;
-use local_avatar\local\design;
+use local_vravatar\local\costumes;
+use local_vravatar\local\design;
 
 /**
  * The "My VR avatar" designer: the choices as labelled radio groups under five headings (head and
  * face, hair, body, costume, extras), the preview and the buttons.
  *
- * @package    local_avatar
+ * @package    local_vravatar
  * @copyright  2026 Adam Jenkins <adam@wisecat.net>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -104,10 +104,10 @@ class designer implements renderable, templatable {
                 } else if (in_array($key, design::FLAGS, true)) {
                     $items[] = ['check' => [
                         'name' => $key,
-                        'id' => 'local-avatar-' . $key,
-                        'groupid' => 'local-avatar-group-' . $key,
-                        'legend' => get_string($key, 'local_avatar'),
-                        'label' => get_string($key . '_show', 'local_avatar'),
+                        'id' => 'local-vravatar-' . $key,
+                        'groupid' => 'local-vravatar-group-' . $key,
+                        'legend' => get_string($key, 'local_vravatar'),
+                        'label' => get_string($key . '_show', 'local_vravatar'),
                         'checked' => !empty($this->current[$key]),
                     ]];
                 } else {
@@ -115,8 +115,8 @@ class designer implements renderable, templatable {
                 }
             }
             $sections[] = [
-                'id' => 'local-avatar-' . str_replace('_', '-', $heading),
-                'heading' => get_string($heading, 'local_avatar'),
+                'id' => 'local-vravatar-' . str_replace('_', '-', $heading),
+                'heading' => get_string($heading, 'local_vravatar'),
                 'items' => $items,
                 'isextras' => $heading === 'section_extras',
             ];
@@ -156,10 +156,10 @@ class designer implements renderable, templatable {
             }
             $bycategory[$entry['category']][] = [
                 'value' => $id,
-                'id' => 'local-avatar-outfit-' . $id,
-                'label' => get_string(costumes::name_string($id), 'local_avatar'),
+                'id' => 'local-vravatar-outfit-' . $id,
+                'label' => get_string(costumes::name_string($id), 'local_vravatar'),
                 'checked' => $this->current['outfit'] === $id,
-                'thumb' => $output->image_url('costumes/' . $id, 'local_avatar')->out(false),
+                'thumb' => $output->image_url('costumes/' . $id, 'local_vravatar')->out(false),
                 'model' => costumes::model_url($id)->out(false),
                 'credit' => self::credit_line($entry),
                 'kind' => $entry['kind'],
@@ -169,20 +169,20 @@ class designer implements renderable, templatable {
         foreach ($bycategory as $category => $options) {
             if ($options) {
                 $categories[] = [
-                    'id' => 'local-avatar-costumes-' . $category,
-                    'legend' => get_string('costumecat_' . $category, 'local_avatar'),
+                    'id' => 'local-vravatar-costumes-' . $category,
+                    'legend' => get_string('costumecat_' . $category, 'local_vravatar'),
                     'options' => $options,
                 ];
             }
         }
         return [
             'name' => 'outfit',
-            'id' => 'local-avatar-group-outfit',
-            'legend' => get_string('outfit', 'local_avatar'),
+            'id' => 'local-vravatar-group-outfit',
+            'legend' => get_string('outfit', 'local_vravatar'),
             'none' => [
                 'value' => 'none',
-                'id' => 'local-avatar-outfit-none',
-                'label' => get_string('outfit_none', 'local_avatar'),
+                'id' => 'local-vravatar-outfit-none',
+                'label' => get_string('outfit_none', 'local_vravatar'),
                 'checked' => $this->current['outfit'] === 'none',
             ],
             'categories' => $categories,
@@ -199,7 +199,7 @@ class designer implements renderable, templatable {
         if (!costumes::needs_attribution($entry)) {
             return '';
         }
-        return get_string('costumecredit', 'local_avatar', (object)[
+        return get_string('costumecredit', 'local_vravatar', (object)[
             'author' => $entry['author'],
             'licence' => costumes::licence_label($entry['licence']),
         ]);
@@ -216,9 +216,9 @@ class designer implements renderable, templatable {
         $credits = [];
         foreach (costumes::all() as $id => $entry) {
             $credits[] = [
-                'name' => get_string(costumes::name_string($id), 'local_avatar'),
+                'name' => get_string(costumes::name_string($id), 'local_vravatar'),
                 'title' => $entry['title'],
-                'credit' => get_string('costumecredit', 'local_avatar', (object)[
+                'credit' => get_string('costumecredit', 'local_vravatar', (object)[
                     'author' => $entry['author'],
                     'licence' => costumes::licence_label($entry['licence']),
                 ]),
@@ -249,8 +249,8 @@ class designer implements renderable, templatable {
             $hatcostume = $key === 'hat' && isset(costumes::HATS[$value]) ? costumes::get(costumes::HATS[$value]) : null;
             $options[] = [
                 'value' => $value,
-                'id' => 'local-avatar-' . $key . '-' . $value,
-                'label' => get_string(self::option_string($key, $value), 'local_avatar'),
+                'id' => 'local-vravatar-' . $key . '-' . $value,
+                'label' => get_string(self::option_string($key, $value), 'local_vravatar'),
                 'checked' => $this->current[$key] === $value,
                 'swatch' => $swatches[$value] ?? '',
                 'palette' => $palette,
@@ -260,8 +260,8 @@ class designer implements renderable, templatable {
         }
         return [
             'name' => $key,
-            'id' => 'local-avatar-group-' . $key,
-            'legend' => get_string(self::LEGENDS[$key], 'local_avatar'),
+            'id' => 'local-vravatar-group-' . $key,
+            'legend' => get_string(self::LEGENDS[$key], 'local_vravatar'),
             'isswatch' => (bool)$swatches,
             'options' => $options,
         ];

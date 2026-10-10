@@ -14,15 +14,15 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace local_avatar\external;
+namespace local_vravatar\external;
 
 use core_external\external_api;
-use local_avatar\local\design;
+use local_vravatar\local\design;
 
 /**
  * Tests of the save and get design web services.
  *
- * @package    local_avatar
+ * @package    local_vravatar
  * @category   test
  * @copyright  2026 Adam Jenkins <adam@wisecat.net>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -134,7 +134,7 @@ final class services_test extends \advanced_testcase {
         $this->setUser($user);
         $this->save(['picture' => true]);
 
-        set_config('allowpicture', 0, 'local_avatar');
+        set_config('allowpicture', 0, 'local_vravatar');
         $result = $this->save(['picture' => false, 'body' => 'broad']);
         $this->assertFalse($result['pictureallowed']);
         $this->assertTrue($result['design']['picture']);
@@ -154,7 +154,7 @@ final class services_test extends \advanced_testcase {
         $this->resetAfterTest();
         $user = $this->getDataGenerator()->create_user();
         $userrole = $DB->get_field('role', 'id', ['shortname' => 'user'], MUST_EXIST);
-        assign_capability('local/avatar:edit', CAP_PROHIBIT, $userrole, \context_system::instance()->id, true);
+        assign_capability('local/vravatar:edit', CAP_PROHIBIT, $userrole, \context_system::instance()->id, true);
         $this->setUser($user);
 
         try {
@@ -162,7 +162,7 @@ final class services_test extends \advanced_testcase {
             $this->fail('Saved without the capability');
         } catch (\required_capability_exception $e) {
             // The message names the capability by its title.
-            $this->assertStringContainsString(get_capability_string('local/avatar:edit'), $e->getMessage());
+            $this->assertStringContainsString(get_capability_string('local/vravatar:edit'), $e->getMessage());
         }
         $this->assertNull(design::load((int)$user->id));
 

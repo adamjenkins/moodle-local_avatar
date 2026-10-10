@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace local_avatar\privacy;
+namespace local_vravatar\privacy;
 
 use core_privacy\local\metadata\collection;
 use core_privacy\local\request\approved_contextlist;
@@ -22,12 +22,12 @@ use core_privacy\local\request\approved_userlist;
 use core_privacy\local\request\userlist;
 use core_privacy\local\request\writer;
 use core_privacy\tests\provider_testcase;
-use local_avatar\local\design;
+use local_vravatar\local\design;
 
 /**
  * Tests of the privacy provider.
  *
- * @package    local_avatar
+ * @package    local_vravatar
  * @category   test
  * @copyright  2026 Adam Jenkins <adam@wisecat.net>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -38,7 +38,7 @@ final class provider_test extends provider_testcase {
      * The metadata names the preference and the live room participants.
      */
     public function test_get_metadata(): void {
-        $items = provider::get_metadata(new collection('local_avatar'))->get_collection();
+        $items = provider::get_metadata(new collection('local_vravatar'))->get_collection();
         $names = array_map(fn($item) => $item->get_name(), $items);
         $this->assertContains(design::PREFERENCE, $names);
         $this->assertContains('liveroomparticipants', $names);
@@ -58,15 +58,15 @@ final class provider_test extends provider_testcase {
         $this->assertSame([(int)$context->id], array_map('intval', $contextids));
         $this->assertSame([], provider::get_contexts_for_userid((int)$without->id)->get_contextids());
 
-        $userlist = new userlist($context, 'local_avatar');
+        $userlist = new userlist($context, 'local_vravatar');
         provider::get_users_in_context($userlist);
         $this->assertSame([(int)$with->id], array_map('intval', $userlist->get_userids()));
 
-        $userlist = new userlist(\context_user::instance($without->id), 'local_avatar');
+        $userlist = new userlist(\context_user::instance($without->id), 'local_vravatar');
         provider::get_users_in_context($userlist);
         $this->assertSame([], $userlist->get_userids());
 
-        $userlist = new userlist(\context_system::instance(), 'local_avatar');
+        $userlist = new userlist(\context_system::instance(), 'local_vravatar');
         provider::get_users_in_context($userlist);
         $this->assertSame([], $userlist->get_userids());
     }
@@ -82,9 +82,9 @@ final class provider_test extends provider_testcase {
         provider::export_user_preferences((int)$user->id);
         $writer = writer::with_context(\context_system::instance());
         $this->assertTrue($writer->has_any_data());
-        $prefs = $writer->get_user_preferences('local_avatar');
+        $prefs = $writer->get_user_preferences('local_vravatar');
         $this->assertSame($saved, json_decode($prefs->{design::PREFERENCE}->value, true));
-        $this->assertSame(get_string('privacy:preference:design', 'local_avatar'), $prefs->{design::PREFERENCE}->description);
+        $this->assertSame(get_string('privacy:preference:design', 'local_vravatar'), $prefs->{design::PREFERENCE}->description);
     }
 
     /**
@@ -113,7 +113,7 @@ final class provider_test extends provider_testcase {
         $contextc = \context_user::instance($c->id);
 
         // Another user's context in the list deletes nothing of theirs.
-        provider::delete_data_for_user(new approved_contextlist($a, 'local_avatar', [$contexta->id, $contextb->id]));
+        provider::delete_data_for_user(new approved_contextlist($a, 'local_vravatar', [$contexta->id, $contextb->id]));
         $this->assertNull(design::load((int)$a->id));
         $this->assertNotNull(design::load((int)$b->id));
 
@@ -122,9 +122,9 @@ final class provider_test extends provider_testcase {
         provider::delete_data_for_all_users_in_context($contextb);
         $this->assertNull(design::load((int)$b->id));
 
-        provider::delete_data_for_users(new approved_userlist($contextc, 'local_avatar', [(int)$b->id]));
+        provider::delete_data_for_users(new approved_userlist($contextc, 'local_vravatar', [(int)$b->id]));
         $this->assertNotNull(design::load((int)$c->id));
-        provider::delete_data_for_users(new approved_userlist($contextc, 'local_avatar', [(int)$c->id]));
+        provider::delete_data_for_users(new approved_userlist($contextc, 'local_vravatar', [(int)$c->id]));
         $this->assertNull(design::load((int)$c->id));
     }
 }

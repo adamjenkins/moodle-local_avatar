@@ -15,7 +15,7 @@
 
 /**
  * The "My VR avatar" designer: a 3D preview of the avatar that follows the form, saving through
- * the local_avatar_save_design web service, Reset to default and a local camera preview.
+ * the local_vravatar_save_design web service, Reset to default and a local camera preview.
  *
  * The preview is drawn by VR room's own avatar builder (vrroomruntime_builtin/live/avatarmodel), the
  * same module that draws the avatars in live rooms, so what a user designs is what others see. The
@@ -23,7 +23,7 @@
  * costume model) is a glTF model of this plugin: its address is on the radio button
  * (data-model) and the builder loads it.
  *
- * @module     local_avatar/designer
+ * @module     local_vravatar/designer
  * @copyright  2026 Adam Jenkins <adam@wisecat.net>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -234,14 +234,14 @@ const wrapAngle = (angle) => {
  */
 const createPreview = (canvas, design, assets, config) => {
     if (typeof AvatarModel.createAvatar !== 'function') {
-        Log.warn('local_avatar: the VR room avatar builder is missing createAvatar');
+        Log.warn('local_vravatar: the VR room avatar builder is missing createAvatar');
         return null;
     }
     let renderer;
     try {
         renderer = new THREE.WebGLRenderer({canvas, antialias: true, alpha: true});
     } catch (e) {
-        Log.warn('local_avatar: no WebGL for the preview: ' + e);
+        Log.warn('local_vravatar: no WebGL for the preview: ' + e);
         return null;
     }
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
@@ -587,7 +587,7 @@ const createPreview = (canvas, design, assets, config) => {
                 dirty = true;
                 return null;
             }).catch((e) => {
-                Log.debug('local_avatar: costume model: ' + e);
+                Log.debug('local_vravatar: costume model: ' + e);
             });
         }
     };
@@ -678,7 +678,7 @@ const setupCamera = (button, preview, status, str) => {
             button.textContent = str.camerapreviewstop;
             status(str.camera_on);
         } catch (e) {
-            Log.debug('local_avatar: camera preview: ' + e);
+            Log.debug('local_vravatar: camera preview: ' + e);
             stop();
             status(str.camera_error);
         } finally {
@@ -694,8 +694,8 @@ const setupCamera = (button, preview, status, str) => {
  * @param {Object} config {design, defaults, pictureurl, pictureallowed, name, seed}
  */
 export const init = async(config) => {
-    const pending = new Pending('local_avatar/designer:init');
-    const root = document.querySelector('[data-region="local-avatar-designer"]');
+    const pending = new Pending('local_vravatar/designer:init');
+    const root = document.querySelector('[data-region="local-vravatar-designer"]');
     if (!root) {
         pending.resolve();
         return;
@@ -712,7 +712,7 @@ export const init = async(config) => {
     const camerabutton = root.querySelector('[data-action="camera"]');
     const zoombutton = root.querySelector('[data-action="zoom"]');
 
-    const values = await getStrings(STRINGS.map((key) => ({key, component: 'local_avatar'})));
+    const values = await getStrings(STRINGS.map((key) => ({key, component: 'local_vravatar'})));
     const str = {};
     STRINGS.forEach((key, i) => {
         str[key] = values[i];
@@ -754,12 +754,12 @@ export const init = async(config) => {
 
     form.addEventListener('submit', (e) => {
         e.preventDefault();
-        const savepending = new Pending('local_avatar/designer:save');
+        const savepending = new Pending('local_vravatar/designer:save');
         savebutton.disabled = true;
         status(str.saving);
         // A native promise: core/ajax gives a jQuery one, which has no finally().
         Promise.resolve(Ajax.call([{
-            methodname: 'local_avatar_save_design',
+            methodname: 'local_vravatar_save_design',
             args: {design: JSON.stringify(readForm(form, config.defaults))},
         }])[0]).then((result) => {
             writeForm(form, result.design);

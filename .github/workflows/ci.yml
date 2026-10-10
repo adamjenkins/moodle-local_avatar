@@ -73,7 +73,7 @@ jobs:
           sudo locale-gen en_AU.UTF-8
           echo "NVM_DIR=$HOME/.nvm" >> $GITHUB_ENV
 
-      # local_avatar requires mod_vrroom (its avatar_appearance hook, the bundled three.js and the avatar
+      # local_vravatar requires mod_vrroom (its avatar_appearance hook, the bundled three.js and the avatar
       # builder of its built-in run mode), so moodle-plugin-ci installs mod_vrroom first, then this
       # plugin as an ordinary local plugin. The mod_vrroom repository is private for now: set the
       # repository secret MOD_VRROOM_TOKEN to a fine-grained token that can read it (Contents:
@@ -172,7 +172,7 @@ jobs:
         if: ${{ !cancelled() }}
         run: moodle-plugin-ci phpunit --fail-on-warning
 
-      # The @local_avatar_webgl scenario checks the 3D preview and needs WebGL, which the CI Chrome
+      # The @local_vravatar_webgl scenario checks the 3D preview and needs WebGL, which the CI Chrome
       # container does not provide (the page shows its text note instead). It runs locally with a
       # software-WebGL Chrome; every other scenario runs here.
       - name: Behat features
@@ -180,7 +180,7 @@ jobs:
         if: ${{ !cancelled() }}
         run: |
           set -o pipefail
-          moodle-plugin-ci behat --profile chrome --scss-deprecations --tags="@local_avatar&&~@local_avatar_webgl" \
+          moodle-plugin-ci behat --profile chrome --scss-deprecations --tags="@local_vravatar&&~@local_vravatar_webgl" \
             2>&1 | tee "${{ runner.temp }}/behat-output.log"
 
       # Behat exits 0 when a step is pending (e.g. a generator entity it does not know) or undefined

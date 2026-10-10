@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * English strings for local_avatar.
+ * English strings for local_vravatar.
  *
- * @package    local_avatar
+ * @package    local_vravatar
  * @copyright  2026 Adam Jenkins <adam@wisecat.net>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -27,7 +27,6 @@ defined('MOODLE_INTERNAL') || die();
 $string['accent'] = 'Accent colour';
 $string['allowpicture'] = 'Profile picture on avatars';
 $string['allowpicture_desc'] = 'Let users show their profile picture on their avatar. A user who chooses it gets their normal Moodle profile picture as a round badge on the face of their avatar, and the other people in the same live room of a VR room activity receive the address of that picture.';
-$string['avatar:edit'] = 'Design your own VR avatar';
 $string['beard'] = 'Beard';
 $string['beard_full'] = 'Full beard';
 $string['beard_goatee'] = 'Goatee';
@@ -211,4 +210,5 @@ $string['skin_match'] = 'Same as body colour';
 $string['skin_medium'] = 'Medium';
 $string['skin_porcelain'] = 'Porcelain';
 $string['skin_tan'] = 'Tan';
+$string['vravatar:edit'] = 'Design your own VR avatar';
 $string['whosees'] = 'Only the people in the same live room as you see your avatar, next to your name. If you turn on your camera in a live room, they see your video on the face of your avatar instead.';

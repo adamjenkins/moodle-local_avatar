@@ -15,16 +15,16 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version details for local_avatar.
+ * Version details for local_vravatar.
  *
- * @package    local_avatar
+ * @package    local_vravatar
  * @copyright  2026 Adam Jenkins <adam@wisecat.net>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->component = 'local_avatar';
+$plugin->component = 'local_vravatar';
 $plugin->version = 2026101001;
 $plugin->release = '0.1.0';
 $plugin->maturity = MATURITY_ALPHA;

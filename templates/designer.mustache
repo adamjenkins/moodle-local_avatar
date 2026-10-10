@@ -15,12 +15,12 @@
     along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 }}
 {{!
-    @template local_avatar/designer
+    @template local_vravatar/designer
 
     The "My VR avatar" designer: a 3D preview and the choices as labelled radio groups and
     checkboxes under five headings (head and face, hair, body, costume, extras), the costumes as a
     wrapping grid of thumbnails by category, and the credits of the costume models. Without
-    JavaScript the form posts to the page; with it, local_avatar/designer saves through the web
+    JavaScript the form posts to the page; with it, local_vravatar/designer saves through the web
     service, draws the preview (loading the costume models named by the data-model attributes) and
     shows the Reset, zoom (a toggle button, aria-pressed) and camera preview buttons.
 
@@ -51,24 +51,24 @@
 
     Example context (json):
     {
-        "actionurl": "https://example.org/local/avatar/index.php",
+        "actionurl": "https://example.org/local/vravatar/index.php",
         "sesskey": "abc123",
         "sections": [
             {
-                "id": "local-avatar-section-head",
+                "id": "local-vravatar-section-head",
                 "heading": "Head and face",
                 "isextras": false,
                 "items": [
                     {
                         "radio": {
                             "name": "skin",
-                            "id": "local-avatar-group-skin",
+                            "id": "local-vravatar-group-skin",
                             "legend": "Skin tone",
                             "isswatch": true,
                             "options": [
                                 {
                                     "value": "match",
-                                    "id": "local-avatar-skin-match",
+                                    "id": "local-vravatar-skin-match",
                                     "label": "Same as body colour",
                                     "checked": true,
                                     "swatch": "",
@@ -76,7 +76,7 @@
                                 },
                                 {
                                     "value": "medium",
-                                    "id": "local-avatar-skin-medium",
+                                    "id": "local-vravatar-skin-medium",
                                     "label": "Medium",
                                     "checked": false,
                                     "swatch": "#c98e64",
@@ -88,8 +88,8 @@
                     {
                         "check": {
                             "name": "ears",
-                            "id": "local-avatar-ears",
-                            "groupid": "local-avatar-group-ears",
+                            "id": "local-vravatar-ears",
+                            "groupid": "local-vravatar-group-ears",
                             "legend": "Ears",
                             "label": "Show ears",
                             "checked": false
@@ -98,20 +98,20 @@
                 ]
             },
             {
-                "id": "local-avatar-section-extras",
+                "id": "local-vravatar-section-extras",
                 "heading": "Extras",
                 "isextras": true,
                 "items": [
                     {
                         "radio": {
                             "name": "hat",
-                            "id": "local-avatar-group-hat",
+                            "id": "local-vravatar-group-hat",
                             "legend": "Hat",
                             "isswatch": false,
                             "options": [
                                 {
                                     "value": "none",
-                                    "id": "local-avatar-hat-none",
+                                    "id": "local-vravatar-hat-none",
                                     "label": "No hat",
                                     "checked": true,
                                     "swatch": "",
@@ -121,12 +121,12 @@
                                 },
                                 {
                                     "value": "pirate",
-                                    "id": "local-avatar-hat-pirate",
+                                    "id": "local-vravatar-hat-pirate",
                                     "label": "Pirate hat",
                                     "checked": false,
                                     "swatch": "",
                                     "palette": "",
-                                    "model": "https://example.org/local/avatar/costumes/hat-pirate.glb",
+                                    "model": "https://example.org/local/vravatar/costumes/hat-pirate.glb",
                                     "credit": "by Poly by Google, CC BY 3.0"
                                 }
                             ]
@@ -135,33 +135,33 @@
                 ]
             },
             {
-                "id": "local-avatar-section-costume",
+                "id": "local-vravatar-section-costume",
                 "heading": "Costume",
                 "isextras": false,
                 "items": [
                     {
                         "costume": {
                             "name": "outfit",
-                            "id": "local-avatar-group-outfit",
+                            "id": "local-vravatar-group-outfit",
                             "legend": "Costume",
                             "none": {
                                 "value": "none",
-                                "id": "local-avatar-outfit-none",
+                                "id": "local-vravatar-outfit-none",
                                 "label": "No costume",
                                 "checked": true
                             },
                             "categories": [
                                 {
-                                    "id": "local-avatar-costumes-suit",
+                                    "id": "local-vravatar-costumes-suit",
                                     "legend": "Suits",
                                     "options": [
                                         {
                                             "value": "suit-tie",
-                                            "id": "local-avatar-outfit-suit-tie",
+                                            "id": "local-vravatar-outfit-suit-tie",
                                             "label": "Suit and tie",
                                             "checked": false,
-                                            "thumb": "https://example.org/theme/image.php/boost/local_avatar/1/costumes/suit-tie",
-                                            "model": "https://example.org/local/avatar/costumes/suit-tie.glb",
+                                            "thumb": "https://example.org/theme/image.php/boost/local_vravatar/1/costumes/suit-tie",
+                                            "model": "https://example.org/local/vravatar/costumes/suit-tie.glb",
                                             "credit": "by Ian MacGillivray, CC BY 3.0",
                                             "kind": "body"
                                         }
@@ -189,87 +189,87 @@
         ]
     }
 }}
-<div class="local-avatar" data-region="local-avatar-designer">
-    <p>{{#str}}intro, local_avatar{{/str}}</p>
-    <p>{{#str}}whosees, local_avatar{{/str}}</p>
+<div class="local-vravatar" data-region="local-vravatar-designer">
+    <p>{{#str}}intro, local_vravatar{{/str}}</p>
+    <p>{{#str}}whosees, local_vravatar{{/str}}</p>
     {{^hasdesign}}
-        <div class="alert alert-info" data-region="nodesign">{{#str}}nodesign, local_avatar{{/str}}</div>
+        <div class="alert alert-info" data-region="nodesign">{{#str}}nodesign, local_vravatar{{/str}}</div>
     {{/hasdesign}}
 
-    <div class="local-avatar-layout">
-        <div class="local-avatar-preview">
-            <h3 class="h5">{{#str}}preview, local_avatar{{/str}}</h3>
-            <div class="local-avatar-stage" id="local-avatar-stage" data-region="stage">
-                <canvas class="local-avatar-canvas" data-region="canvas" tabindex="0" role="img"
-                    aria-label="{{#str}}previewlabel, local_avatar{{/str}}"
-                    aria-describedby="local-avatar-previewhelp" hidden></canvas>
-                <p class="local-avatar-fallback" data-region="fallback">{{#str}}previewunavailable, local_avatar{{/str}}</p>
+    <div class="local-vravatar-layout">
+        <div class="local-vravatar-preview">
+            <h3 class="h5">{{#str}}preview, local_vravatar{{/str}}</h3>
+            <div class="local-vravatar-stage" id="local-vravatar-stage" data-region="stage">
+                <canvas class="local-vravatar-canvas" data-region="canvas" tabindex="0" role="img"
+                    aria-label="{{#str}}previewlabel, local_vravatar{{/str}}"
+                    aria-describedby="local-vravatar-previewhelp" hidden></canvas>
+                <p class="local-vravatar-fallback" data-region="fallback">{{#str}}previewunavailable, local_vravatar{{/str}}</p>
             </div>
-            <p class="small text-muted" id="local-avatar-previewhelp" data-region="previewhelp" hidden>
-                {{#str}}previewhelp, local_avatar{{/str}}
+            <p class="small text-muted" id="local-vravatar-previewhelp" data-region="previewhelp" hidden>
+                {{#str}}previewhelp, local_vravatar{{/str}}
             </p>
-            <div class="local-avatar-previewbuttons">
-                <button type="button" class="btn btn-secondary btn-sm" data-action="zoom" aria-controls="local-avatar-stage"
-                    aria-pressed="false" hidden>{{#str}}showwhole, local_avatar{{/str}}</button>
+            <div class="local-vravatar-previewbuttons">
+                <button type="button" class="btn btn-secondary btn-sm" data-action="zoom" aria-controls="local-vravatar-stage"
+                    aria-pressed="false" hidden>{{#str}}showwhole, local_vravatar{{/str}}</button>
                 <button type="button" class="btn btn-secondary btn-sm" data-action="camera" aria-pressed="false" hidden>
-                    {{#str}}camerapreview, local_avatar{{/str}}
+                    {{#str}}camerapreview, local_vravatar{{/str}}
                 </button>
             </div>
         </div>
 
-        <div class="local-avatar-choices">
+        <div class="local-vravatar-choices">
             <form method="post" action="{{actionurl}}" data-region="form">
                 <input type="hidden" name="sesskey" value="{{sesskey}}">
                 <input type="hidden" name="action" value="save">
                 {{#sections}}
-                    <section class="local-avatar-section" aria-labelledby="{{id}}">
-                        <h3 class="h5 local-avatar-section-heading" id="{{id}}">{{heading}}</h3>
+                    <section class="local-vravatar-section" aria-labelledby="{{id}}">
+                        <h3 class="h5 local-vravatar-section-heading" id="{{id}}">{{heading}}</h3>
                         {{#items}}
                             {{#radio}}
-                                <fieldset class="local-avatar-group{{#isswatch}} local-avatar-swatches{{/isswatch}}" id="{{id}}">
+                                <fieldset class="local-vravatar-group{{#isswatch}} local-vravatar-swatches{{/isswatch}}" id="{{id}}">
                                     <legend class="h6">{{legend}}</legend>
                                     {{#options}}
-                                        <div class="form-check form-check-inline local-avatar-option">
+                                        <div class="form-check form-check-inline local-vravatar-option">
                                             <input class="form-check-input" type="radio" name="{{name}}" value="{{value}}" id="{{id}}"
                                                 {{#model}}data-model="{{model}}"{{/model}} {{#checked}}checked{{/checked}}>
                                             <label class="form-check-label" for="{{id}}">
                                                 {{#swatch}}
-                                                    <span class="local-avatar-swatch" data-swatch="{{value}}" data-palette="{{palette}}"
+                                                    <span class="local-vravatar-swatch" data-swatch="{{value}}" data-palette="{{palette}}"
                                                         style="background-color: {{swatch}};" aria-hidden="true"></span>
                                                 {{/swatch}}
                                                 {{label}}
-                                                {{#credit}}<span class="local-avatar-credit">{{credit}}</span>{{/credit}}
+                                                {{#credit}}<span class="local-vravatar-credit">{{credit}}</span>{{/credit}}
                                             </label>
                                         </div>
                                     {{/options}}
                                 </fieldset>
                             {{/radio}}
                             {{#costume}}
-                                <fieldset class="local-avatar-group local-avatar-costumes" id="{{id}}"
-                                    aria-describedby="local-avatar-outfit-help">
+                                <fieldset class="local-vravatar-group local-vravatar-costumes" id="{{id}}"
+                                    aria-describedby="local-vravatar-outfit-help">
                                     <legend class="h6">{{legend}}</legend>
-                                    <p class="form-text text-muted" id="local-avatar-outfit-help">{{#str}}outfit_help, local_avatar{{/str}}</p>
+                                    <p class="form-text text-muted" id="local-vravatar-outfit-help">{{#str}}outfit_help, local_vravatar{{/str}}</p>
                                     {{#none}}
-                                        <div class="form-check local-avatar-option">
+                                        <div class="form-check local-vravatar-option">
                                             <input class="form-check-input" type="radio" name="{{name}}" value="{{value}}" id="{{id}}"
                                                 {{#checked}}checked{{/checked}}>
                                             <label class="form-check-label" for="{{id}}">{{label}}</label>
                                         </div>
                                     {{/none}}
                                     {{#categories}}
-                                        <fieldset class="local-avatar-costumecategory" id="{{id}}">
-                                            <legend class="local-avatar-costumelegend">{{legend}}</legend>
-                                            <div class="local-avatar-costumegrid">
+                                        <fieldset class="local-vravatar-costumecategory" id="{{id}}">
+                                            <legend class="local-vravatar-costumelegend">{{legend}}</legend>
+                                            <div class="local-vravatar-costumegrid">
                                                 {{#options}}
-                                                    <div class="local-avatar-costume">
-                                                        <input class="local-avatar-costume-input" type="radio" name="outfit"
+                                                    <div class="local-vravatar-costume">
+                                                        <input class="local-vravatar-costume-input" type="radio" name="outfit"
                                                             value="{{value}}" id="{{id}}" data-model="{{model}}" data-kind="{{kind}}"
                                                             {{#checked}}checked{{/checked}}>
-                                                        <label class="local-avatar-costume-label" for="{{id}}">
-                                                            <img class="local-avatar-costume-thumb" src="{{thumb}}" alt="" width="96" height="96"
+                                                        <label class="local-vravatar-costume-label" for="{{id}}">
+                                                            <img class="local-vravatar-costume-thumb" src="{{thumb}}" alt="" width="96" height="96"
                                                                 loading="lazy">
-                                                            <span class="local-avatar-costume-name">{{label}}</span>
-                                                            {{#credit}}<span class="local-avatar-credit">{{credit}}</span>{{/credit}}
+                                                            <span class="local-vravatar-costume-name">{{label}}</span>
+                                                            {{#credit}}<span class="local-vravatar-credit">{{credit}}</span>{{/credit}}
                                                         </label>
                                                     </div>
                                                 {{/options}}
@@ -278,8 +278,8 @@
                                     {{/categories}}
                                 </fieldset>
                                 {{#hascredits}}
-                                    <details class="local-avatar-credits">
-                                        <summary>{{#str}}costumecredits, local_avatar{{/str}}</summary>
+                                    <details class="local-vravatar-credits">
+                                        <summary>{{#str}}costumecredits, local_vravatar{{/str}}</summary>
                                         <ul class="small">
                                             {{#credits}}
                                                 <li>{{name}}: <a href="{{source}}">{{title}}</a> {{credit}}</li>
@@ -289,7 +289,7 @@
                                 {{/hascredits}}
                             {{/costume}}
                             {{#check}}
-                                <fieldset class="local-avatar-group" id="{{groupid}}">
+                                <fieldset class="local-vravatar-group" id="{{groupid}}">
                                     <legend class="h6">{{legend}}</legend>
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" name="{{name}}" value="1" id="{{id}}"
@@ -300,43 +300,43 @@
                             {{/check}}
                         {{/items}}
                         {{#isextras}}
-                            <fieldset class="local-avatar-group" id="local-avatar-group-extras">
-                                <legend class="h6">{{#str}}glassespicture, local_avatar{{/str}}</legend>
+                            <fieldset class="local-vravatar-group" id="local-vravatar-group-extras">
+                                <legend class="h6">{{#str}}glassespicture, local_vravatar{{/str}}</legend>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="glasses" value="1" id="local-avatar-glasses"
+                                    <input class="form-check-input" type="checkbox" name="glasses" value="1" id="local-vravatar-glasses"
                                         {{#glasses}}checked{{/glasses}}>
-                                    <label class="form-check-label" for="local-avatar-glasses">{{#str}}glasses, local_avatar{{/str}}</label>
+                                    <label class="form-check-label" for="local-vravatar-glasses">{{#str}}glasses, local_vravatar{{/str}}</label>
                                 </div>
                                 {{#pictureallowed}}
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="picture" value="1" id="local-avatar-picture"
-                                            aria-describedby="local-avatar-picture-help" {{#picture}}checked{{/picture}}>
-                                        <label class="form-check-label" for="local-avatar-picture">{{#str}}picture, local_avatar{{/str}}</label>
-                                        <div class="form-text text-muted" id="local-avatar-picture-help">
-                                            {{#str}}picture_help, local_avatar{{/str}}
-                                            {{^haspicture}}{{#str}}picturenone, local_avatar{{/str}}{{/haspicture}}
+                                        <input class="form-check-input" type="checkbox" name="picture" value="1" id="local-vravatar-picture"
+                                            aria-describedby="local-vravatar-picture-help" {{#picture}}checked{{/picture}}>
+                                        <label class="form-check-label" for="local-vravatar-picture">{{#str}}picture, local_vravatar{{/str}}</label>
+                                        <div class="form-text text-muted" id="local-vravatar-picture-help">
+                                            {{#str}}picture_help, local_vravatar{{/str}}
+                                            {{^haspicture}}{{#str}}picturenone, local_vravatar{{/str}}{{/haspicture}}
                                         </div>
                                     </div>
                                 {{/pictureallowed}}
                                 {{^pictureallowed}}
-                                    <p class="text-muted mb-0">{{#str}}picturedisabled, local_avatar{{/str}}</p>
+                                    <p class="text-muted mb-0">{{#str}}picturedisabled, local_vravatar{{/str}}</p>
                                 {{/pictureallowed}}
                             </fieldset>
                         {{/isextras}}
                     </section>
                 {{/sections}}
 
-                <div class="local-avatar-buttons">
-                    <button type="submit" class="btn btn-primary" data-action="save">{{#str}}save, local_avatar{{/str}}</button>
-                    <button type="button" class="btn btn-secondary" data-action="reset" hidden>{{#str}}reset, local_avatar{{/str}}</button>
+                <div class="local-vravatar-buttons">
+                    <button type="submit" class="btn btn-primary" data-action="save">{{#str}}save, local_vravatar{{/str}}</button>
+                    <button type="button" class="btn btn-secondary" data-action="reset" hidden>{{#str}}reset, local_vravatar{{/str}}</button>
                 </div>
-                <p class="local-avatar-status" data-region="status" role="status" aria-live="polite"></p>
+                <p class="local-vravatar-status" data-region="status" role="status" aria-live="polite"></p>
             </form>
 
             <form method="post" action="{{actionurl}}" data-region="removeform"{{^hasdesign}} hidden{{/hasdesign}}>
                 <input type="hidden" name="sesskey" value="{{sesskey}}">
                 <input type="hidden" name="action" value="remove">
-                <button type="submit" class="btn btn-link px-0">{{#str}}remove, local_avatar{{/str}}</button>
+                <button type="submit" class="btn btn-link px-0">{{#str}}remove, local_vravatar{{/str}}</button>
             </form>
         </div>
     </div>

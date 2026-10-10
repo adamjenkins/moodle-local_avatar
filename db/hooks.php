@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Hook callbacks of local_avatar.
+ * Hook callbacks of local_vravatar.
  *
- * @package    local_avatar
+ * @package    local_vravatar
  * @copyright  2026 Adam Jenkins <adam@wisecat.net>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -27,6 +27,6 @@ defined('MOODLE_INTERNAL') || die();
 $callbacks = [
     [
         'hook' => \mod_vrroom\hook\avatar_appearance::class,
-        'callback' => [\local_avatar\hook_listener::class, 'avatar_appearance'],
+        'callback' => [\local_vravatar\hook_listener::class, 'avatar_appearance'],
     ],
 ];

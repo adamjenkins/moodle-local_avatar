@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace local_avatar\privacy;
+namespace local_vravatar\privacy;
 
 use core_privacy\local\metadata\collection;
 use core_privacy\local\request\approved_contextlist;
@@ -22,17 +22,17 @@ use core_privacy\local\request\approved_userlist;
 use core_privacy\local\request\contextlist;
 use core_privacy\local\request\userlist;
 use core_privacy\local\request\writer;
-use local_avatar\local\design;
+use local_vravatar\local\design;
 
 /**
- * Privacy provider for local_avatar.
+ * Privacy provider for local_vravatar.
  *
  * Personal data: one user preference, the user's avatar design. The other participants of a live
  * room of VR room receive the design and, when the user chose it and the site allows it, the address
  * of the user's profile picture (described as an external location). The design is deleted with the
  * user's data in their user context.
  *
- * @package    local_avatar
+ * @package    local_vravatar
  * @copyright  2026 Adam Jenkins <adam@wisecat.net>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -114,10 +114,10 @@ class provider implements
             return;
         }
         writer::export_user_preference(
-            'local_avatar',
+            'local_vravatar',
             design::PREFERENCE,
             json_encode($saved),
-            get_string('privacy:preference:design', 'local_avatar')
+            get_string('privacy:preference:design', 'local_vravatar')
         );
     }
 

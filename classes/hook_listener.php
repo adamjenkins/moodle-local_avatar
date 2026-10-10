@@ -14,15 +14,15 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace local_avatar;
+namespace local_vravatar;
 
-use local_avatar\local\costumes;
-use local_avatar\local\design;
+use local_vravatar\local\costumes;
+use local_vravatar\local\design;
 
 /**
- * Hook listeners of local_avatar.
+ * Hook listeners of local_vravatar.
  *
- * @package    local_avatar
+ * @package    local_vravatar
  * @copyright  2026 Adam Jenkins <adam@wisecat.net>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */

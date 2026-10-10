@@ -1,4 +1,4 @@
-@local @local_avatar
+@local @local_vravatar
 Feature: Users design their own VR avatar
   In order to look like myself in the live rooms of VR room activities
   As a user
@@ -47,7 +47,7 @@ Feature: Users design their own VR avatar
   @javascript
   Scenario: Reset to default puts the default choices back in the form until saved
     Given I log in as "student1"
-    And I visit "/local/avatar/index.php"
+    And I visit "/local/vravatar/index.php"
     And I set the field "Broad" to "1"
     And I set the field "Red" in the "Body colour" "fieldset" to "1"
     And I set the field "Glasses" to "1"
@@ -64,7 +64,7 @@ Feature: Users design their own VR avatar
 
   Scenario: Without JavaScript the choices are saved and the avatar can be removed again
     Given I log in as "student1"
-    And I visit "/local/avatar/index.php"
+    And I visit "/local/vravatar/index.php"
     Then I should not see "Example context"
     When I set the field "Long" to "1"
     And I set the field "Sun hat" to "1"
@@ -81,9 +81,9 @@ Feature: Users design their own VR avatar
   Scenario: The site can turn off profile pictures on avatars
     Given the following config values are set as admin:
       | config       | value | plugin       |
-      | allowpicture | 0     | local_avatar |
+      | allowpicture | 0     | local_vravatar |
     And I log in as "student1"
-    When I visit "/local/avatar/index.php"
+    When I visit "/local/vravatar/index.php"
     Then I should see "The site does not show profile pictures on avatars."
     And I should not see "Example context"
     And I should not see "Show my profile picture on my avatar"
@@ -93,10 +93,10 @@ Feature: Users design their own VR avatar
     When I navigate to "Plugins > Local plugins > VR avatar" in site administration
     Then the field "Profile picture on avatars" matches value "1"
 
-  @javascript @local_avatar_webgl
+  @javascript @local_vravatar_webgl
   Scenario: The 3D preview is shown where the browser has WebGL
     Given I log in as "student1"
-    When I visit "/local/avatar/index.php"
+    When I visit "/local/vravatar/index.php"
     Then "[data-region='canvas']" "css_element" should be visible
     And I should not see "This browser cannot show the 3D preview"
     And I should see "Drag the preview, or use the left and right arrow keys, to turn it."
@@ -112,7 +112,7 @@ Feature: Users design their own VR avatar
   @javascript
   Scenario: Choose a new hairstyle, a skin tone and a face, save and see them after a reload
     Given I log in as "student1"
-    And I visit "/local/avatar/index.php"
+    And I visit "/local/vravatar/index.php"
     Then I should see "Head and face"
     And I should see "Hair"
     And I should see "Body"
@@ -150,7 +150,7 @@ Feature: Users design their own VR avatar
   @javascript
   Scenario: Choose a costume and the pirate hat, save and see them kept after a reload
     Given I log in as "student1"
-    And I visit "/local/avatar/index.php"
+    And I visit "/local/vravatar/index.php"
     Then I should see "Costume"
     And I should see "Pirates"
     And I should see "Computers"
@@ -158,13 +158,13 @@ Feature: Users design their own VR avatar
     And the field "No costume" matches value "1"
     When I set the field "Pirate captain" to "1"
     # The pirate hat's label also holds its credit line, so it is found by its id.
-    And I set the field "local-avatar-hat-pirate" to "1"
+    And I set the field "local-vravatar-hat-pirate" to "1"
     And I press "Save"
     And I should see "Your avatar was saved." in the "[data-region='status']" "css_element"
     And I reload the page
     Then the field "Pirate captain" matches value "1"
     And the field "No costume" matches value ""
-    And the field "local-avatar-hat-pirate" matches value "1"
+    And the field "local-vravatar-hat-pirate" matches value "1"
     When I set the field "Laptop" to "1"
     And I press "Save"
     And I should see "Your avatar was saved." in the "[data-region='status']" "css_element"
@@ -174,7 +174,7 @@ Feature: Users design their own VR avatar
 
   Scenario: Without JavaScript a costume is saved and kept
     Given I log in as "student1"
-    And I visit "/local/avatar/index.php"
+    And I visit "/local/vravatar/index.php"
     When I set the field "Mini woman C" to "1"
     And I press "Save"
     Then I should see "Your avatar was saved."

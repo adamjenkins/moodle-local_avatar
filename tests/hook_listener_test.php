@@ -14,15 +14,15 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace local_avatar;
+namespace local_vravatar;
 
-use local_avatar\local\design;
+use local_vravatar\local\design;
 use mod_vrroom\hook\avatar_appearance;
 
 /**
  * Tests of the listener that gives live rooms the users' avatar designs.
  *
- * @package    local_avatar
+ * @package    local_vravatar
  * @category   test
  * @copyright  2026 Adam Jenkins <adam@wisecat.net>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -128,12 +128,12 @@ final class hook_listener_test extends \advanced_testcase {
         $this->assertSame('pirate-captain', $appearances['peera']['appearance']['outfit']);
         $this->assertSame('pirate', $appearances['peera']['appearance']['hat']);
         $this->assertSame([
-            'outfit' => (new \moodle_url('/local/avatar/costumes/pirate-captain.glb'))->out(false),
-            'hat' => (new \moodle_url('/local/avatar/costumes/hat-pirate.glb'))->out(false),
+            'outfit' => (new \moodle_url('/local/vravatar/costumes/pirate-captain.glb'))->out(false),
+            'hat' => (new \moodle_url('/local/vravatar/costumes/hat-pirate.glb'))->out(false),
         ], $appearances['peera']['assets']);
 
         $this->assertSame(
-            ['outfit' => (new \moodle_url('/local/avatar/costumes/device-monitor.glb'))->out(false)],
+            ['outfit' => (new \moodle_url('/local/vravatar/costumes/device-monitor.glb'))->out(false)],
             $appearances['peerd']['assets']
         );
         // A drawn hat (cap) and no costume: no assets.
@@ -144,7 +144,7 @@ final class hook_listener_test extends \advanced_testcase {
      * With the site setting off nobody gets a picture, but the designs still arrive.
      */
     public function test_no_pictures_when_not_allowed(): void {
-        set_config('allowpicture', 0, 'local_avatar');
+        set_config('allowpicture', 0, 'local_vravatar');
         $hook = $this->hook();
         hook_listener::avatar_appearance($hook);
         $appearances = $hook->get_appearances();

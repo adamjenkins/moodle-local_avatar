@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Web services of local_avatar.
+ * Web services of local_vravatar.
  *
- * @package    local_avatar
+ * @package    local_vravatar
  * @copyright  2026 Adam Jenkins <adam@wisecat.net>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -25,19 +25,19 @@
 defined('MOODLE_INTERNAL') || die();
 
 $functions = [
-    'local_avatar_get_design' => [
-        'classname' => \local_avatar\external\get_design::class,
+    'local_vravatar_get_design' => [
+        'classname' => \local_vravatar\external\get_design::class,
         'description' => 'Return the current user\'s VR avatar design.',
         'type' => 'read',
         'ajax' => true,
         'readonlysession' => true,
-        'capabilities' => 'local/avatar:edit',
+        'capabilities' => 'local/vravatar:edit',
     ],
-    'local_avatar_save_design' => [
-        'classname' => \local_avatar\external\save_design::class,
+    'local_vravatar_save_design' => [
+        'classname' => \local_vravatar\external\save_design::class,
         'description' => 'Save the current user\'s VR avatar design and return it as stored.',
         'type' => 'write',
         'ajax' => true,
-        'capabilities' => 'local/avatar:edit',
+        'capabilities' => 'local/vravatar:edit',
     ],
 ];
