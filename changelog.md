@@ -22,3 +22,8 @@ ALPHA. First release, Moodle 5.2 and 5.3, requires mod_vrroom 2026101000. Not ye
 - Privacy provider (user preference, live-room participants as an external location).
 - PHPUnit tests, Behat feature (`@local_avatar`; the WebGL preview scenario is `@local_avatar_webgl`)
   and a GitHub Actions workflow.
+- Hair and heads in `vrroom-avatar/1` (all optional, each defaulting to the earlier look): `hair`
+  14 styles, `haircolor` 10 colours, `head` round/square/oval/heart, new `skin` (match + 8 tones),
+  `eyes`, `brows`, `nose`, `ears` (flag), `beard` (in the hair colour), and the reserved `outfit`
+  (only `none`). The designer page shows them under four headings; `local_avatar_save_design` and
+  `local_avatar_get_design` return the new keys.

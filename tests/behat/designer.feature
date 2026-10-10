@@ -65,6 +65,7 @@ Feature: Users design their own VR avatar
   Scenario: Without JavaScript the choices are saved and the avatar can be removed again
     Given I log in as "student1"
     And I visit "/local/avatar/index.php"
+    Then I should not see "Example context"
     When I set the field "Long" to "1"
     And I set the field "Sun hat" to "1"
     And I press "Save"
@@ -84,6 +85,7 @@ Feature: Users design their own VR avatar
     And I log in as "student1"
     When I visit "/local/avatar/index.php"
     Then I should see "The site does not show profile pictures on avatars."
+    And I should not see "Example context"
     And I should not see "Show my profile picture on my avatar"
 
   Scenario: An administrator finds the profile picture setting on by default
@@ -98,3 +100,46 @@ Feature: Users design their own VR avatar
     Then "[data-region='canvas']" "css_element" should be visible
     And I should not see "This browser cannot show the 3D preview"
     And I should see "Drag the preview, or use the left and right arrow keys, to turn it."
+    And I should not see "Example context"
+    When I press "Show the whole avatar"
+    Then "Show the face" "button" should exist
+    And I press "Show the face"
+    And "Show the whole avatar" "button" should exist
+
+  @javascript
+  Scenario: Choose a new hairstyle, a skin tone and a face, save and see them after a reload
+    Given I log in as "student1"
+    And I visit "/local/avatar/index.php"
+    Then I should see "Head and face"
+    And I should see "Hair"
+    And I should see "Body"
+    And I should see "Extras"
+    And the field "Same as body colour" matches value "1"
+    And the field "Dots" matches value "1"
+    And the field "No beard" matches value "1"
+    And the field "Show ears" matches value ""
+    When I set the field "Medium" to "1"
+    And I set the field "Oval" to "1"
+    And I set the field "Almond" to "1"
+    And I set the field "Arched" to "1"
+    And I set the field "Pointed" to "1"
+    And I set the field "Show ears" to "1"
+    And I set the field "Goatee" to "1"
+    And I set the field "Afro" to "1"
+    And I set the field "Purple" in the "Hair colour" "fieldset" to "1"
+    And I press "Save"
+    And I should see "Your avatar was saved." in the "[data-region='status']" "css_element"
+    And I reload the page
+    Then the field "Medium" matches value "1"
+    And the field "Same as body colour" matches value ""
+    And the field "Oval" matches value "1"
+    And the field "Almond" matches value "1"
+    And the field "Arched" matches value "1"
+    And the field "Pointed" matches value "1"
+    And the field "Show ears" matches value "1"
+    And the field "Goatee" matches value "1"
+    And the field "No beard" matches value ""
+    And the field "Afro" matches value "1"
+    And the field "No hair" matches value ""
+    And the field "Purple" in the "Hair colour" "fieldset" matches value "1"
+    And the field "Purple" in the "Body colour" "fieldset" matches value ""

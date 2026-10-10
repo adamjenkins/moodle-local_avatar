@@ -58,6 +58,7 @@ if ($action === 'remove') {
     foreach (array_keys(design::choices()) as $key) {
         $input[$key] = optional_param($key, '', PARAM_ALPHA);
     }
+    $input['ears'] = optional_param('ears', 0, PARAM_BOOL);
     $input['glasses'] = optional_param('glasses', 0, PARAM_BOOL);
     $input['picture'] = $pictureallowed
         ? optional_param('picture', 0, PARAM_BOOL)

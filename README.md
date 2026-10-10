@@ -10,16 +10,25 @@ there is nothing to moderate:
 
 | Part | Choices |
 |---|---|
+| Head | round · rounded square · oval · heart-shaped |
+| Skin tone | same as body colour (the standard look) · porcelain · fair · light · medium · tan · brown · dark · deep |
+| Face | eyes (dots · round · almond · sleepy), eyebrows (none · thin · thick · arched), nose (none · small · round · pointed), ears (on/off) |
+| Beard | none · stubble · moustache · goatee · full beard, in the hair colour |
+| Hair | none · short · long · bun · curly · afro · ponytail · braids · buzz cut · bob · mohawk · side parting · pigtails · top knot |
+| Hair colour | black · brown · blonde · auburn · grey · white · red · pink · blue · purple |
 | Body | capsule · slim · broad |
-| Head | round · rounded square |
 | Colours | body colour and accent colour from 12 named colours |
-| Hair | none · short · long · bun, in 6 colours |
 | Extras | glasses, hat (none · cap · beanie · sun hat) |
-| Face | the user's Moodle profile picture as a round badge on the face (shown by default; each user can untick it) |
+| Picture | the user's Moodle profile picture as a round badge on the face (shown by default; each user can untick it) |
+
+The heads are stylised to match the bodies, not photographs. Every new part defaults to the look
+avatars had before it existed, so a design saved earlier looks the same. The key `outfit` is
+reserved for costumes; today it is always `none`.
 
 The page shows a 3D preview that turns slowly (drag it, or use the arrow keys, to turn it), the
-choices as ordinary labelled radio buttons and colour swatches (every colour is named, for screen
-readers), **Save**, **Reset to default** and **Stop using my avatar** (back to the standard look).
+choices under four headings (Head and face, Hair, Body, Extras) as ordinary labelled radio buttons,
+checkboxes and colour swatches (every colour and skin tone is named,
+for screen readers), **Save**, **Reset to default** and **Stop using my avatar** (back to the standard look).
 The preview is drawn by VR room's own avatar builder, so what a user designs is exactly what the
 others see. Where a browser has a camera, *Try my camera on the preview* shows the user's camera on
 the face of the preview, as others see it in a live room when the camera is on; that video stays

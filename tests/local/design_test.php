@@ -30,13 +30,20 @@ final class design_test extends \advanced_testcase {
     private const FULL = [
         'schema' => 'vrroom-avatar/1',
         'body' => 'broad',
-        'head' => 'square',
+        'head' => 'heart',
+        'skin' => 'tan',
         'color' => 'teal',
         'accent' => 'pink',
-        'hair' => 'bun',
-        'haircolor' => 'auburn',
+        'hair' => 'braids',
+        'haircolor' => 'purple',
+        'eyes' => 'almond',
+        'brows' => 'arched',
+        'nose' => 'pointed',
+        'ears' => true,
+        'beard' => 'goatee',
         'glasses' => true,
         'hat' => 'sunhat',
+        'outfit' => 'none',
         'picture' => true,
     ];
 
@@ -48,12 +55,19 @@ final class design_test extends \advanced_testcase {
             'schema' => 'vrroom-avatar/1',
             'body' => 'capsule',
             'head' => 'round',
+            'skin' => 'match',
             'color' => 'blue',
             'accent' => 'grey',
             'hair' => 'none',
             'haircolor' => 'brown',
+            'eyes' => 'dots',
+            'brows' => 'none',
+            'nose' => 'none',
+            'ears' => false,
+            'beard' => 'none',
             'glasses' => false,
             'hat' => 'none',
+            'outfit' => 'none',
             'picture' => true,
         ];
         $this->assertSame($expected, design::defaults());
@@ -82,9 +96,76 @@ final class design_test extends \advanced_testcase {
             }
         }
         $this->assertCount(12, design::COLOURS);
-        $this->assertCount(6, design::HAIRCOLOURS);
+        $this->assertCount(10, design::HAIRCOLOURS);
+        $this->assertCount(9, design::SKINS);
+        $this->assertCount(14, design::HAIRSTYLES);
         $this->assertSame(design::COLOURS, array_keys(design::SWATCHES));
         $this->assertSame(design::HAIRCOLOURS, array_keys(design::HAIRSWATCHES));
+        // Every skin tone but "match" (the body colour) has a swatch.
+        $this->assertSame(array_values(array_diff(design::SKINS, ['match'])), array_keys(design::SKINSWATCHES));
+    }
+
+    /**
+     * The new keys have the contract's lists, in order, and the defaults of the look before them.
+     */
+    public function test_hair_and_head_lists(): void {
+        $choices = design::choices();
+        $this->assertSame(['none', 'short', 'long', 'bun', 'curly', 'afro', 'ponytail', 'braids', 'buzz', 'bob',
+            'mohawk', 'sidepart', 'pigtails', 'topknot'], $choices['hair']);
+        $this->assertSame(
+            ['black', 'brown', 'blonde', 'auburn', 'grey', 'white', 'red', 'pink', 'blue', 'purple'],
+            $choices['haircolor']
+        );
+        $this->assertSame(['round', 'square', 'oval', 'heart'], $choices['head']);
+        $this->assertSame(
+            ['match', 'porcelain', 'fair', 'light', 'medium', 'tan', 'brown', 'dark', 'deep'],
+            $choices['skin']
+        );
+        $this->assertSame(['dots', 'round', 'almond', 'sleepy'], $choices['eyes']);
+        $this->assertSame(['none', 'thin', 'thick', 'arched'], $choices['brows']);
+        $this->assertSame(['none', 'small', 'round', 'pointed'], $choices['nose']);
+        $this->assertSame(['none', 'stubble', 'moustache', 'goatee', 'full'], $choices['beard']);
+        $this->assertSame(['none'], $choices['outfit']);
+        $this->assertContains('ears', design::FLAGS);
+    }
+
+    /**
+     * A design saved before the new keys existed reads back with today's look for each of them.
+     */
+    public function test_old_design_keeps_its_look(): void {
+        $old = [
+            'schema' => 'vrroom-avatar/1',
+            'body' => 'slim',
+            'head' => 'square',
+            'color' => 'red',
+            'accent' => 'yellow',
+            'hair' => 'long',
+            'haircolor' => 'blonde',
+            'glasses' => true,
+            'hat' => 'cap',
+            'picture' => false,
+        ];
+        $clean = design::clean(json_encode($old));
+        foreach ($old as $key => $value) {
+            $this->assertSame($value, $clean[$key], $key);
+        }
+        $this->assertSame('match', $clean['skin']);
+        $this->assertSame('dots', $clean['eyes']);
+        $this->assertSame('none', $clean['brows']);
+        $this->assertSame('none', $clean['nose']);
+        $this->assertFalse($clean['ears']);
+        $this->assertSame('none', $clean['beard']);
+        $this->assertSame('none', $clean['outfit']);
+    }
+
+    /**
+     * "outfit" is reserved for costumes: only "none" is kept, anything else is dropped.
+     */
+    public function test_outfit_reserved(): void {
+        $this->assertSame('none', design::clean(['outfit' => 'none'])['outfit']);
+        foreach (['pirate', 'sailor', 'suit', '', 'None', 1, true, ['none']] as $value) {
+            $this->assertSame('none', design::clean(['outfit' => $value])['outfit'], var_export($value, true));
+        }
     }
 
     /**
@@ -101,6 +182,13 @@ final class design_test extends \advanced_testcase {
             'glasses' => 'yes',
             'hat' => null,
             'picture' => 'https://example.org/me.png',
+            'skin' => '#c98e64',
+            'eyes' => 'laser',
+            'brows' => 'Thick',
+            'nose' => ['small'],
+            'ears' => 'pointy',
+            'beard' => 'full ',
+            'outfit' => 'pirate',
             'name' => 'Someone else',
             'html' => '<b>bold</b>',
         ]);
@@ -114,6 +202,7 @@ final class design_test extends \advanced_testcase {
     public function test_flags(): void {
         foreach ([true, 1, '1', 'true'] as $yes) {
             $this->assertTrue(design::clean(['glasses' => $yes])['glasses']);
+            $this->assertTrue(design::clean(['ears' => $yes])['ears']);
         }
         foreach ([false, 0, '0', 'false'] as $no) {
             $this->assertFalse(design::clean(['glasses' => $no, 'picture' => $no])['glasses']);

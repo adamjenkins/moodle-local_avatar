@@ -46,8 +46,23 @@ final class design {
         'blue', 'indigo', 'purple', 'pink', 'brown', 'grey',
     ];
 
-    /** @var string[] The hair colours. */
-    public const HAIRCOLOURS = ['black', 'brown', 'blonde', 'auburn', 'grey', 'white'];
+    /** @var string[] The hair colours (beards use the hair colour too). */
+    public const HAIRCOLOURS = ['black', 'brown', 'blonde', 'auburn', 'grey', 'white', 'red', 'pink', 'blue', 'purple'];
+
+    /**
+     * The skin tones, light to deep. "match" gives the head and hands the body colour (the look of
+     * avatars before skin tones existed); the others are natural skin colours chosen by the avatar
+     * builder.
+     *
+     * @var string[]
+     */
+    public const SKINS = ['match', 'porcelain', 'fair', 'light', 'medium', 'tan', 'brown', 'dark', 'deep'];
+
+    /** @var string[] The hair styles, in the order the designer shows them. */
+    public const HAIRSTYLES = [
+        'none', 'short', 'long', 'bun', 'curly', 'afro', 'ponytail', 'braids', 'buzz', 'bob', 'mohawk', 'sidepart',
+        'pigtails', 'topknot',
+    ];
 
     /**
      * Swatch colours for the designer form, by name. Only a visual cue next to the colour's name:
@@ -73,36 +88,68 @@ final class design {
 
     /** @var string[] Swatch colours of the hair colours. */
     public const HAIRSWATCHES = [
-        'black' => '#212121',
-        'brown' => '#5d4037',
-        'blonde' => '#e6c36a',
-        'auburn' => '#a0442c',
+        'black' => '#1c1c1c',
+        'brown' => '#5d3a1a',
+        'blonde' => '#e0c068',
+        'auburn' => '#8d3b1f',
         'grey' => '#9e9e9e',
-        'white' => '#f5f5f5',
+        'white' => '#eeeeee',
+        'red' => '#b8452a',
+        'pink' => '#e78fb3',
+        'blue' => '#3f6fd8',
+        'purple' => '#7b4bb5',
+    ];
+
+    /**
+     * Swatch colours of the skin tones, a visual cue only: the designer page repaints them from the
+     * avatar builder's own list when that module gives one. "match" has no swatch (it is the body
+     * colour).
+     *
+     * @var string[]
+     */
+    public const SKINSWATCHES = [
+        'porcelain' => '#f9e4d8',
+        'fair' => '#f1cfb6',
+        'light' => '#e3b48f',
+        'medium' => '#c99266',
+        'tan' => '#b07646',
+        'brown' => '#8a5636',
+        'dark' => '#683f25',
+        'deep' => '#472a19',
     ];
 
     /** @var string[] Keys of the document that are true or false. */
-    public const FLAGS = ['glasses', 'picture'];
+    public const FLAGS = ['ears', 'glasses', 'picture'];
 
     /**
-     * The allowed values of every key that takes a name, in the order the designer shows them.
+     * The allowed values of every key that takes a name.
+     *
+     * "outfit" is reserved for costumes: today its only value is "none", so any other value is
+     * dropped and the key is always "none".
      *
      * @return array key => list of names
      */
     public static function choices(): array {
         return [
             'body' => ['capsule', 'slim', 'broad'],
-            'head' => ['round', 'square'],
+            'head' => ['round', 'square', 'oval', 'heart'],
+            'skin' => self::SKINS,
             'color' => self::COLOURS,
             'accent' => self::COLOURS,
-            'hair' => ['none', 'short', 'long', 'bun'],
+            'hair' => self::HAIRSTYLES,
             'haircolor' => self::HAIRCOLOURS,
+            'eyes' => ['dots', 'round', 'almond', 'sleepy'],
+            'brows' => ['none', 'thin', 'thick', 'arched'],
+            'nose' => ['none', 'small', 'round', 'pointed'],
+            'beard' => ['none', 'stubble', 'moustache', 'goatee', 'full'],
             'hat' => ['none', 'cap', 'beanie', 'sunhat'],
+            'outfit' => ['none'],
         ];
     }
 
     /**
-     * The default document.
+     * The default document. Every key added after the first version defaults to the look the avatar
+     * had before it, so designs saved earlier look the same.
      *
      * @return array
      */
@@ -111,12 +158,19 @@ final class design {
             'schema' => self::SCHEMA,
             'body' => 'capsule',
             'head' => 'round',
+            'skin' => 'match',
             'color' => 'blue',
             'accent' => 'grey',
             'hair' => 'none',
             'haircolor' => 'brown',
+            'eyes' => 'dots',
+            'brows' => 'none',
+            'nose' => 'none',
+            'ears' => false,
+            'beard' => 'none',
             'glasses' => false,
             'hat' => 'none',
+            'outfit' => 'none',
             // On by default (owner, 2026-10-10); the site setting allowpicture can turn it off.
             'picture' => true,
         ];

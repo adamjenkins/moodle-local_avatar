@@ -87,6 +87,22 @@ final class services_test extends \advanced_testcase {
     }
 
     /**
+     * The hair and head keys go through both services; an outfit other than none is dropped.
+     */
+    public function test_save_hair_and_head(): void {
+        $this->resetAfterTest();
+        $this->setUser($this->getDataGenerator()->create_user());
+        $chosen = ['skin' => 'deep', 'hair' => 'afro', 'haircolor' => 'pink', 'head' => 'oval', 'eyes' => 'sleepy',
+            'brows' => 'thick', 'nose' => 'round', 'ears' => true, 'beard' => 'full'];
+        $result = $this->save($chosen + ['outfit' => 'pirate']);
+        foreach ($chosen as $key => $value) {
+            $this->assertSame($value, $result['design'][$key], $key);
+        }
+        $this->assertSame('none', $result['design']['outfit']);
+        $this->assertSame($result['design'], $this->get()['design']);
+    }
+
+    /**
      * Invalid JSON saves the default design.
      */
     public function test_save_invalid_json(): void {

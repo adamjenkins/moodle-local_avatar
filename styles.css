@@ -12,6 +12,34 @@
     max-width: 420px;
 }
 
+/*
+ * Side by side on wider screens, the preview stays in view while the choices scroll. In Boost the
+ * page scrolls inside #page, under the navbar, so a small top offset is enough.
+ */
+@media (min-width: 768px) {
+    .local-avatar-layout {
+        flex-wrap: nowrap;
+    }
+
+    .local-avatar-preview {
+        position: sticky;
+        top: 1rem;
+        flex: 0 1 40%;
+        align-self: flex-start;
+    }
+
+    .local-avatar-stage {
+        min-height: 16rem;
+        max-height: calc(100vh - var(--navbar-height, 60px) - 9rem);
+    }
+}
+
+.local-avatar-previewbuttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
 .local-avatar-choices {
     flex: 2 1 320px;
     min-width: 0;
@@ -23,7 +51,7 @@
     aspect-ratio: 3 / 4;
     border: 1px solid var(--bs-border-color, #dee2e6);
     border-radius: 0.5rem;
-    background: linear-gradient(180deg, #eef3f8 0%, #d7e0ea 100%);
+    background: linear-gradient(180deg, #f6f4f1 0%, #e4ded6 100%);
     overflow: hidden;
 }
 
@@ -47,6 +75,16 @@
 .local-avatar-fallback {
     margin: 0;
     padding: 1rem;
+}
+
+.local-avatar-section {
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--bs-border-color, #dee2e6);
+}
+
+.local-avatar-section-heading {
+    margin-bottom: 0.75rem;
 }
 
 .local-avatar-group {

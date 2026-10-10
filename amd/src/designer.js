@@ -34,8 +34,17 @@ import Notification from 'core/notification';
 import Pending from 'core/pending';
 import {getStrings} from 'core/str';
 
-/** Turntable speed (radians per second). */
-const SPIN_SPEED = 0.35;
+/** Turntable speed (radians per second): slow, so the face is seen often. */
+const SPIN_SPEED = 0.25;
+
+/** How long the preview holds the face towards the viewer after a change or at the start (ms). */
+const HOLD_MS = 3000;
+
+/** How long the turntable waits after the user turned the avatar before it turns again (ms). */
+const IDLE_MS = 5000;
+
+/** How fast the avatar turns back to face the viewer (share of the angle per second). */
+const RETURN_RATE = 6;
 
 /** Radians turned per pixel dragged. */
 const DRAG_SPEED = 0.01;
@@ -46,18 +55,28 @@ const KEY_STEP = Math.PI / 12;
 /** Field of view of the preview camera (degrees). */
 const FOV = 30;
 
+/** How far below the head the close-up reaches, to show the shoulders (m). */
+const SHOULDERS = 0.3;
+
+/** Room left above the head (and its hat) in the close-up (m). */
+const HEADROOM = 0.04;
+
 /** Camera video size for the preview, as in live rooms. */
 const VIDEO = {width: {ideal: 320}, height: {ideal: 240}, frameRate: {ideal: 15}};
 
-/** Keys of the document that take a name (radio groups). */
-const CHOICES = ['body', 'head', 'color', 'accent', 'hair', 'haircolor', 'hat'];
+/**
+ * Keys of the document that take a name (radio groups). "outfit" is reserved and has no group: it
+ * keeps its default.
+ */
+const CHOICES = ['body', 'head', 'skin', 'color', 'accent', 'hair', 'haircolor', 'eyes', 'brows', 'nose', 'beard', 'hat'];
 
 /** Keys of the document that are true or false (checkboxes). */
-const FLAGS = ['glasses', 'picture'];
+const FLAGS = ['ears', 'glasses', 'picture'];
 
 /** The strings the page uses, in this order. */
 const STRINGS = [
     'saving', 'saved', 'resetdone', 'camera_on', 'camera_off', 'camera_error', 'camerapreview', 'camerapreviewstop',
+    'showwhole', 'showface',
 ];
 
 /**
@@ -105,17 +124,33 @@ const writeForm = (form, design) => {
 };
 
 /**
+ * The avatar builder's palette for one kind of swatch (data-palette), when it exports one.
+ *
+ * @param {string} palette "colour", "hair" or "skin".
+ * @returns {Object|undefined} name => colour (CSS string or number)
+ */
+const builderPalette = (palette) => {
+    switch (palette) {
+        case 'hair':
+            return AvatarModel.HAIR_COLOURS;
+        case 'skin':
+            return AvatarModel.SKIN_TONES || AvatarModel.SKIN_COLOURS;
+        case 'colour':
+            return AvatarModel.COLOURS;
+        default:
+            return undefined;
+    }
+};
+
+/**
  * Paint the swatches with the avatar builder's own colours when it lists them, so a swatch shows
  * exactly the colour of the avatar.
  *
  * @param {HTMLElement} root The designer.
  */
 const paintSwatches = (root) => {
-    const palettes = [AvatarModel.COLOURS, AvatarModel.HAIR_COLOURS];
     root.querySelectorAll('[data-swatch]').forEach((swatch) => {
-        const group = swatch.closest('fieldset');
-        const ishair = group && group.id === 'local-avatar-group-haircolor';
-        const palette = palettes[ishair ? 1 : 0];
+        const palette = builderPalette(swatch.dataset.palette);
         const colour = palette && palette[swatch.dataset.swatch];
         if (typeof colour === 'string') {
             swatch.style.backgroundColor = colour;
@@ -140,12 +175,34 @@ const hasWebgl = () => {
 };
 
 /**
- * The 3D preview: a turntable with the avatar, drag or arrow keys to turn it.
+ * The angle between -pi and pi that turns the same way as the given one.
+ *
+ * @param {number} angle Radians.
+ * @returns {number} Radians.
+ */
+const wrapAngle = (angle) => {
+    const turn = Math.PI * 2;
+    let wrapped = angle % turn;
+    if (wrapped > Math.PI) {
+        wrapped -= turn;
+    } else if (wrapped < -Math.PI) {
+        wrapped += turn;
+    }
+    return wrapped;
+};
+
+/**
+ * The 3D preview: the avatar on a turntable, facing the viewer at first and after every change,
+ * shown as a head-and-shoulders close-up or whole. Drag or the arrow keys turn it.
+ *
+ * The avatar looks along -Z (see vrroomruntime_builtin/live/avatarmodel), so the camera stands on
+ * -Z looking back at it: with the turntable at 0 the face is towards the viewer.
  *
  * @param {HTMLCanvasElement} canvas The canvas.
  * @param {Object} design The document to show first.
  * @param {Object} config Page config.
- * @returns {Object|null} {update(design), setVideo(video|null), avatar} or null when it cannot draw.
+ * @returns {Object|null} {update(design), setVideo(video|null), setWhole(bool)} or null when it cannot
+ *     draw.
  */
 const createPreview = (canvas, design, config) => {
     if (typeof AvatarModel.createAvatar !== 'function') {
@@ -164,11 +221,19 @@ const createPreview = (canvas, design, config) => {
         renderer.outputColorSpace = THREE.SRGBColorSpace;
     }
 
+    // Lights stay with the viewer (on -Z), not on the turntable, so the face is always lit when it
+    // looks at the viewer. A warm, light ground colour keeps pale skin from looking grey.
     const scene = new THREE.Scene();
-    scene.add(new THREE.HemisphereLight(0xffffff, 0x8899aa, 1.6));
-    const sun = new THREE.DirectionalLight(0xffffff, 1.4);
-    sun.position.set(1.5, 3, 2.5);
-    scene.add(sun);
+    scene.add(new THREE.HemisphereLight(0xffffff, 0xe6dccf, 1.1));
+    const key = new THREE.DirectionalLight(0xfff8f0, 1.7);
+    key.position.set(0.8, 3.4, -2.6);
+    scene.add(key);
+    const fill = new THREE.DirectionalLight(0xffffff, 0.6);
+    fill.position.set(-2.6, 1.8, -1.2);
+    scene.add(fill);
+    const rim = new THREE.DirectionalLight(0xffffff, 0.45);
+    rim.position.set(0.5, 2.5, 3);
+    scene.add(rim);
 
     const camera = new THREE.PerspectiveCamera(FOV, 3 / 4, 0.05, 50);
     const turntable = new THREE.Group();
@@ -180,23 +245,56 @@ const createPreview = (canvas, design, config) => {
         seed: config.seed,
     });
     turntable.add(avatar.group);
+    // The avatar stands on the turntable's axis (its head is at x = z = 0), so it turns on the spot.
+    avatar.group.position.set(0, 0, 0);
+    const head = avatar.group.getObjectByName('head');
 
-    // Frame the avatar: centre it on the turntable and back the camera off until it fits.
+    let whole = false;
+
+    /**
+     * Point the camera at a box (in turntable coordinates) from -Z so that it fits the canvas.
+     *
+     * @param {number} bottom Lowest point (m).
+     * @param {number} top Highest point (m).
+     * @param {number} width Width (m).
+     * @param {number} depth Depth (m).
+     * @param {number} margin Extra room around it (1 = none).
+     */
+    const aim = (bottom, top, width, depth, margin) => {
+        const middle = (bottom + top) / 2;
+        const height = Math.max(top - bottom, width / Math.max(camera.aspect, 0.1)) * margin;
+        const distance = (height / 2) / Math.tan(THREE.MathUtils.degToRad(FOV / 2)) + depth / 2;
+        camera.position.set(0, middle + height * 0.04, -distance);
+        camera.lookAt(0, middle, 0);
+    };
+
+    // Frame the avatar with the turntable facing front: the head and shoulders, or all of it.
     const frame = () => {
-        avatar.group.position.set(0, 0, 0);
-        const box = new THREE.Box3().setFromObject(avatar.group);
+        const angle = turntable.rotation.y;
+        turntable.rotation.y = 0;
+        turntable.updateMatrixWorld(true);
+        const box = new THREE.Box3();
+        if (whole || !head) {
+            box.setFromObject(avatar.group);
+        } else {
+            box.setFromObject(head);
+        }
+        turntable.rotation.y = angle;
+        turntable.updateMatrixWorld(true);
         if (box.isEmpty()) {
-            camera.position.set(0, 1.4, 3);
-            camera.lookAt(0, 1.2, 0);
+            const y = AvatarModel.STANDING_HEAD_HEIGHT || 1.6;
+            camera.position.set(0, y, whole ? -4 : -1.5);
+            camera.lookAt(0, whole ? y / 2 : y - 0.1, 0);
             return;
         }
-        const centre = box.getCenter(new THREE.Vector3());
         const size = box.getSize(new THREE.Vector3());
-        avatar.group.position.set(-centre.x, -centre.y, -centre.z);
-        const height = Math.max(size.y, size.x / Math.max(camera.aspect, 0.1)) * 1.15;
-        const distance = (height / 2) / Math.tan(THREE.MathUtils.degToRad(FOV / 2)) + size.z;
-        camera.position.set(0, height * 0.08, distance);
-        camera.lookAt(0, 0, 0);
+        // Keep the axis in the middle of the picture: as wide as the widest side of it.
+        const width = 2 * Math.max(Math.abs(box.min.x), Math.abs(box.max.x));
+        if (whole || !head) {
+            aim(box.min.y, box.max.y, width, size.z, 1.12);
+        } else {
+            aim(box.min.y - SHOULDERS, box.max.y + HEADROOM, Math.max(width, SHOULDERS * 1.6), size.z, 1.05);
+        }
     };
 
     const resize = () => {
@@ -209,10 +307,37 @@ const createPreview = (canvas, design, config) => {
     };
 
     const reducedmotion = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : null;
+    const still = () => !!(reducedmotion && reducedmotion.matches);
     let dragging = null;
+    let hovering = false;
+    let focused = false;
     let last = performance.now();
+    // Hold the face towards the viewer until then, then turn slowly.
+    let holduntil = last + HOLD_MS;
+    // The user turned the avatar: leave it as they put it until then.
+    let touched = -Infinity;
+    // Turn back to face the viewer (after a change).
+    let returning = false;
+    // Until then, follow the head while it grows or shrinks with the camera video.
+    let videofade = -Infinity;
     let dirty = true;
     let videoshown = false;
+
+    /**
+     * Show the face to the viewer: at once with reduced motion, else by turning back.
+     */
+    const faceFront = () => {
+        holduntil = performance.now() + HOLD_MS;
+        touched = -Infinity;
+        if (still()) {
+            turntable.rotation.y = 0;
+            returning = false;
+        } else {
+            turntable.rotation.y = wrapAngle(turntable.rotation.y);
+            returning = true;
+        }
+        dirty = true;
+    };
 
     const draw = () => {
         renderer.render(scene, camera);
@@ -221,42 +346,93 @@ const createPreview = (canvas, design, config) => {
     const tick = (now) => {
         const dt = Math.min((now - last) / 1000, 0.1);
         last = now;
-        const spin = !dragging && !(reducedmotion && reducedmotion.matches);
-        if (spin) {
-            turntable.rotation.y += SPIN_SPEED * dt;
+        let moved = false;
+        if (returning && !dragging) {
+            const angle = turntable.rotation.y;
+            if (Math.abs(angle) < 0.002) {
+                turntable.rotation.y = 0;
+                returning = false;
+            } else {
+                turntable.rotation.y = angle - angle * Math.min(1, RETURN_RATE * dt);
+            }
+            moved = true;
+        } else if (!dragging && !hovering && !focused && !still() && now >= holduntil && now - touched >= IDLE_MS) {
+            turntable.rotation.y = wrapAngle(turntable.rotation.y + SPIN_SPEED * dt);
+            moved = true;
+        }
+        const fading = now < videofade;
+        if (fading || videoshown) {
+            if (typeof avatar.update === 'function') {
+                avatar.update(now);
+            }
+            if (fading) {
+                frame();
+            }
         }
         // A live camera picture changes every frame.
-        if (spin || dirty || videoshown) {
+        if (moved || dirty || videoshown || fading) {
             draw();
         }
         window.requestAnimationFrame(tick);
     };
 
+    /**
+     * The user turned the avatar by a number of radians.
+     *
+     * @param {number} by Radians.
+     */
+    const turn = (by) => {
+        turntable.rotation.y = wrapAngle(turntable.rotation.y + by);
+        returning = false;
+        touched = performance.now();
+        dirty = true;
+    };
+
     canvas.addEventListener('pointerdown', (e) => {
         dragging = {x: e.clientX, id: e.pointerId};
         canvas.setPointerCapture(e.pointerId);
+        returning = false;
     });
     canvas.addEventListener('pointermove', (e) => {
         if (dragging && dragging.id === e.pointerId) {
-            turntable.rotation.y += (e.clientX - dragging.x) * DRAG_SPEED;
+            turn((e.clientX - dragging.x) * DRAG_SPEED);
             dragging.x = e.clientX;
-            dirty = true;
         }
     });
     const release = (e) => {
         if (dragging && dragging.id === e.pointerId) {
             dragging = null;
+            touched = performance.now();
         }
     };
     canvas.addEventListener('pointerup', release);
     canvas.addEventListener('pointercancel', release);
+    // The turntable stops while the pointer is on the preview or it has the focus.
+    canvas.addEventListener('pointerenter', () => {
+        hovering = true;
+    });
+    canvas.addEventListener('pointerleave', () => {
+        hovering = false;
+    });
+    canvas.addEventListener('focus', () => {
+        focused = true;
+    });
+    canvas.addEventListener('blur', () => {
+        focused = false;
+    });
     canvas.addEventListener('keydown', (e) => {
         if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
-            turntable.rotation.y += e.key === 'ArrowLeft' ? -KEY_STEP : KEY_STEP;
-            dirty = true;
+            turn(e.key === 'ArrowLeft' ? -KEY_STEP : KEY_STEP);
             e.preventDefault();
         }
     });
+    if (reducedmotion && typeof reducedmotion.addEventListener === 'function') {
+        reducedmotion.addEventListener('change', () => {
+            if (still()) {
+                faceFront();
+            }
+        });
+    }
 
     if (window.ResizeObserver) {
         new ResizeObserver(() => {
@@ -269,6 +445,7 @@ const createPreview = (canvas, design, config) => {
             dirty = true;
         });
     }
+    turntable.rotation.y = 0;
     resize();
     draw();
     window.requestAnimationFrame(tick);
@@ -276,14 +453,39 @@ const createPreview = (canvas, design, config) => {
     return {
         update: (next) => {
             avatar.setAppearance(next, next.picture ? config.pictureurl : '');
-            dirty = true;
+            frame();
+            faceFront();
         },
         setVideo: (video) => {
             avatar.setVideo(video);
             videoshown = !!video;
-            dirty = true;
+            // The head grows or shrinks with the video's fade: follow it a little longer than that.
+            videofade = performance.now() + (AvatarModel.FADE_MS || 300) + 400;
+            faceFront();
+        },
+        setWhole: (value) => {
+            whole = !!value;
+            frame();
+            faceFront();
         },
     };
+};
+
+/**
+ * The zoom button: shows the whole avatar or the head-and-shoulders close-up.
+ *
+ * @param {HTMLButtonElement} button The button.
+ * @param {Object} preview The preview.
+ * @param {Object} str Strings.
+ */
+const setupZoom = (button, preview, str) => {
+    let whole = false;
+    button.hidden = false;
+    button.addEventListener('click', () => {
+        whole = !whole;
+        preview.setWhole(whole);
+        button.textContent = whole ? str.showface : str.showwhole;
+    });
 };
 
 /**
@@ -363,6 +565,7 @@ export const init = async(config) => {
     const fallback = root.querySelector('[data-region="fallback"]');
     const previewhelp = root.querySelector('[data-region="previewhelp"]');
     const camerabutton = root.querySelector('[data-action="camera"]');
+    const zoombutton = root.querySelector('[data-action="zoom"]');
 
     const values = await getStrings(STRINGS.map((key) => ({key, component: 'local_avatar'})));
     const str = {};
@@ -382,6 +585,7 @@ export const init = async(config) => {
         if (preview) {
             fallback.hidden = true;
             previewhelp.hidden = false;
+            setupZoom(zoombutton, preview, str);
             setupCamera(camerabutton, preview, status, str);
         } else {
             canvas.hidden = true;
