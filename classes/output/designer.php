@@ -19,11 +19,12 @@ namespace local_avatar\output;
 use core\output\renderable;
 use core\output\renderer_base;
 use core\output\templatable;
+use local_avatar\local\costumes;
 use local_avatar\local\design;
 
 /**
- * The "My VR avatar" designer: the choices as labelled radio groups under four headings (head and
- * face, hair, body, extras), the preview and the buttons.
+ * The "My VR avatar" designer: the choices as labelled radio groups under five headings (head and
+ * face, hair, body, costume, extras), the preview and the buttons.
  *
  * @package    local_avatar
  * @copyright  2026 Adam Jenkins <adam@wisecat.net>
@@ -32,9 +33,10 @@ use local_avatar\local\design;
 class designer implements renderable, templatable {
     /**
      * The sections of the form, in page (and keyboard) order: lang string of the heading => keys.
-     * A key in FLAGS is a checkbox, any other a radio group. The Extras section also holds the
-     * glasses and profile picture checkboxes, drawn by the template. "outfit" is reserved and not
-     * shown.
+     * A key in FLAGS is a checkbox, "outfit" the costume picker (thumbnails by category), any other
+     * a radio group. The Extras section also holds the glasses and profile picture checkboxes, drawn
+     * by the template. The costume comes after the body: a costume replaces the body (a device the
+     * head too), and some costumes take the accent colour.
      *
      * @var array
      */
@@ -42,6 +44,7 @@ class designer implements renderable, templatable {
         'section_head' => ['head', 'skin', 'eyes', 'brows', 'nose', 'ears', 'beard'],
         'section_hair' => ['hair', 'haircolor'],
         'section_body' => ['body', 'color', 'accent'],
+        'section_costume' => ['outfit'],
         'section_extras' => ['hat'],
     ];
 
@@ -96,7 +99,9 @@ class designer implements renderable, templatable {
         foreach (self::SECTIONS as $heading => $keys) {
             $items = [];
             foreach ($keys as $key) {
-                if (in_array($key, design::FLAGS, true)) {
+                if ($key === 'outfit') {
+                    $items[] = ['costume' => $this->costume_group($output, $choices['outfit'])];
+                } else if (in_array($key, design::FLAGS, true)) {
                     $items[] = ['check' => [
                         'name' => $key,
                         'id' => 'local-avatar-' . $key,
@@ -117,6 +122,7 @@ class designer implements renderable, templatable {
             ];
         }
 
+        $credits = $this->credits();
         return [
             'actionurl' => $this->actionurl->out(false),
             'sesskey' => sesskey(),
@@ -126,7 +132,100 @@ class designer implements renderable, templatable {
             'pictureallowed' => $this->pictureallowed,
             'haspicture' => $this->haspicture,
             'hasdesign' => $this->hasdesign,
+            'credits' => $credits,
+            'hascredits' => (bool)$credits,
         ];
+    }
+
+    /**
+     * The costume picker: "No costume", then one group of thumbnails per category.
+     *
+     * Each costume is a radio button whose label holds its thumbnail, its name and, when its licence
+     * asks for it, the author's credit. data-model gives the designer's preview the model's address.
+     *
+     * @param renderer_base $output Renderer.
+     * @param string[] $allowed Allowed values of "outfit": "none" and the costume ids.
+     * @return array {name, id, legend, none: option, categories: [{id, legend, options}]}
+     */
+    protected function costume_group(renderer_base $output, array $allowed): array {
+        $bycategory = array_fill_keys(costumes::CATEGORIES, []);
+        foreach ($allowed as $id) {
+            $entry = costumes::get($id);
+            if ($entry === null) {
+                continue;
+            }
+            $bycategory[$entry['category']][] = [
+                'value' => $id,
+                'id' => 'local-avatar-outfit-' . $id,
+                'label' => get_string(costumes::name_string($id), 'local_avatar'),
+                'checked' => $this->current['outfit'] === $id,
+                'thumb' => $output->image_url('costumes/' . $id, 'local_avatar')->out(false),
+                'model' => costumes::model_url($id)->out(false),
+                'credit' => self::credit_line($entry),
+                'kind' => $entry['kind'],
+            ];
+        }
+        $categories = [];
+        foreach ($bycategory as $category => $options) {
+            if ($options) {
+                $categories[] = [
+                    'id' => 'local-avatar-costumes-' . $category,
+                    'legend' => get_string('costumecat_' . $category, 'local_avatar'),
+                    'options' => $options,
+                ];
+            }
+        }
+        return [
+            'name' => 'outfit',
+            'id' => 'local-avatar-group-outfit',
+            'legend' => get_string('outfit', 'local_avatar'),
+            'none' => [
+                'value' => 'none',
+                'id' => 'local-avatar-outfit-none',
+                'label' => get_string('outfit_none', 'local_avatar'),
+                'checked' => $this->current['outfit'] === 'none',
+            ],
+            'categories' => $categories,
+        ];
+    }
+
+    /**
+     * The small credit line of a costume whose licence asks for one ("by <author>, CC BY 3.0").
+     *
+     * @param array $entry Manifest entry.
+     * @return string The line, or '' when the licence does not ask for a credit.
+     */
+    protected static function credit_line(array $entry): string {
+        if (!costumes::needs_attribution($entry)) {
+            return '';
+        }
+        return get_string('costumecredit', 'local_avatar', (object)[
+            'author' => $entry['author'],
+            'licence' => costumes::licence_label($entry['licence']),
+        ]);
+    }
+
+    /**
+     * The credits of every costume model, for the list under the costume picker.
+     *
+     * Every costume is listed, whatever its licence: CC0 asks for no credit, but the authors get it.
+     *
+     * @return array list of {name, title, credit, source}
+     */
+    protected function credits(): array {
+        $credits = [];
+        foreach (costumes::all() as $id => $entry) {
+            $credits[] = [
+                'name' => get_string(costumes::name_string($id), 'local_avatar'),
+                'title' => $entry['title'],
+                'credit' => get_string('costumecredit', 'local_avatar', (object)[
+                    'author' => $entry['author'],
+                    'licence' => costumes::licence_label($entry['licence']),
+                ]),
+                'source' => $entry['source'],
+            ];
+        }
+        return $credits;
     }
 
     /**
@@ -134,7 +233,8 @@ class designer implements renderable, templatable {
      *
      * @param string $key Document key.
      * @param string[] $values Allowed values, in order.
-     * @return array {name, id, legend, isswatch, palette, options: [{value, id, label, checked, swatch}]}
+     * @return array {name, id, legend, isswatch, options: [{value, id, label, checked, swatch, palette, model,
+     *     credit}]}
      */
     protected function radio_group(string $key, array $values): array {
         [$swatches, $palette] = match ($key) {
@@ -145,6 +245,8 @@ class designer implements renderable, templatable {
         };
         $options = [];
         foreach ($values as $value) {
+            // A hat that is a costume model: the preview loads it, and its credit is shown.
+            $hatcostume = $key === 'hat' && isset(costumes::HATS[$value]) ? costumes::get(costumes::HATS[$value]) : null;
             $options[] = [
                 'value' => $value,
                 'id' => 'local-avatar-' . $key . '-' . $value,
@@ -152,6 +254,8 @@ class designer implements renderable, templatable {
                 'checked' => $this->current[$key] === $value,
                 'swatch' => $swatches[$value] ?? '',
                 'palette' => $palette,
+                'model' => $hatcostume ? costumes::model_url($hatcostume['id'])->out(false) : '',
+                'credit' => $hatcostume ? self::credit_line($hatcostume) : '',
             ];
         }
         return [

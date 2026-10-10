@@ -19,7 +19,9 @@
  *
  * The preview is drawn by VR room's own avatar builder (vrroomruntime_builtin/live/avatarmodel), the
  * same module that draws the avatars in live rooms, so what a user designs is what others see. The
- * camera preview stays in this browser: nothing is sent anywhere.
+ * camera preview stays in this browser: nothing is sent anywhere. A costume (or a hat that is a
+ * costume model) is a glTF model of this plugin: its address is on the radio button
+ * (data-model) and the builder loads it.
  *
  * @module     local_avatar/designer
  * @copyright  2026 Adam Jenkins <adam@wisecat.net>
@@ -58,17 +60,25 @@ const FOV = 30;
 /** How far below the head the close-up reaches, to show the shoulders (m). */
 const SHOULDERS = 0.3;
 
+/** Widest a body costume's shoulders make the close-up, in SHOULDERS (sleeves held out stop here). */
+const WIDEST = 3;
+
 /** Room left above the head (and its hat) in the close-up (m). */
 const HEADROOM = 0.04;
+
+/** How long the preview follows the avatar's size after a change, while a costume model loads (ms). */
+const SETTLE_MS = 4000;
 
 /** Camera video size for the preview, as in live rooms. */
 const VIDEO = {width: {ideal: 320}, height: {ideal: 240}, frameRate: {ideal: 15}};
 
-/**
- * Keys of the document that take a name (radio groups). "outfit" is reserved and has no group: it
- * keeps its default.
- */
-const CHOICES = ['body', 'head', 'skin', 'color', 'accent', 'hair', 'haircolor', 'eyes', 'brows', 'nose', 'beard', 'hat'];
+/** Keys of the document that take a name (radio groups; "outfit" is the costume picker). */
+const CHOICES = [
+    'body', 'head', 'skin', 'color', 'accent', 'hair', 'haircolor', 'eyes', 'brows', 'nose', 'beard', 'hat', 'outfit',
+];
+
+/** The keys whose chosen radio button may name a model to load (data-model), by asset name. */
+const ASSETS = {outfit: 'outfit', hat: 'hat'};
 
 /** Keys of the document that are true or false (checkboxes). */
 const FLAGS = ['ears', 'glasses', 'picture'];
@@ -76,7 +86,7 @@ const FLAGS = ['ears', 'glasses', 'picture'];
 /** The strings the page uses, in this order. */
 const STRINGS = [
     'saving', 'saved', 'resetdone', 'camera_on', 'camera_off', 'camera_error', 'camerapreview', 'camerapreviewstop',
-    'showwhole', 'showface',
+    'showwhole',
 ];
 
 /**
@@ -101,6 +111,23 @@ const readForm = (form, defaults) => {
         }
     });
     return design;
+};
+
+/**
+ * The models the form's choices name, for the avatar builder: asset name => address.
+ *
+ * @param {HTMLFormElement} form The form.
+ * @returns {Object} {outfit: url, hat: url}, each only when chosen.
+ */
+const readAssets = (form) => {
+    const assets = {};
+    Object.keys(ASSETS).forEach((name) => {
+        const checked = form.querySelector(`input[type="radio"][name="${ASSETS[name]}"]:checked`);
+        if (checked && checked.dataset.model) {
+            assets[name] = checked.dataset.model;
+        }
+    });
+    return assets;
 };
 
 /**
@@ -200,11 +227,12 @@ const wrapAngle = (angle) => {
  *
  * @param {HTMLCanvasElement} canvas The canvas.
  * @param {Object} design The document to show first.
+ * @param {Object} assets The models it names ({outfit, hat}).
  * @param {Object} config Page config.
- * @returns {Object|null} {update(design), setVideo(video|null), setWhole(bool)} or null when it cannot
- *     draw.
+ * @returns {Object|null} {update(design, assets), setVideo(video|null), setWhole(bool)} or null when it
+ *     cannot draw.
  */
-const createPreview = (canvas, design, config) => {
+const createPreview = (canvas, design, assets, config) => {
     if (typeof AvatarModel.createAvatar !== 'function') {
         Log.warn('local_avatar: the VR room avatar builder is missing createAvatar');
         return null;
@@ -243,11 +271,11 @@ const createPreview = (canvas, design, config) => {
         name: config.name,
         pictureurl: design.picture ? config.pictureurl : '',
         seed: config.seed,
+        assets,
     });
     turntable.add(avatar.group);
     // The avatar stands on the turntable's axis (its head is at x = z = 0), so it turns on the spot.
     avatar.group.position.set(0, 0, 0);
-    const head = avatar.group.getObjectByName('head');
 
     let whole = false;
 
@@ -268,16 +296,103 @@ const createPreview = (canvas, design, config) => {
         camera.lookAt(0, middle, 0);
     };
 
+    /**
+     * Grow a box by the parts of an object that are drawn: a hidden part (the head a device takes
+     * the place of, the body a costume takes the place of) does not count, nor anything under it.
+     *
+     * @param {Object} object THREE.Object3D, its world matrices up to date.
+     * @param {Object} box THREE.Box3 to grow.
+     * @param {Function} [keep] Called with (x, y, z) world points; only those it accepts count.
+     * @returns {Object} The box.
+     */
+    const visibleBox = (object, box, keep) => {
+        const part = new THREE.Box3();
+        const point = new THREE.Vector3();
+        const visit = (node) => {
+            if (!node.visible) {
+                return;
+            }
+            const geometry = node.geometry;
+            if (geometry && (node.isMesh || node.isSprite || node.isLine || node.isPoints)) {
+                if (keep && geometry.attributes && geometry.attributes.position && !node.isSkinnedMesh) {
+                    // Only the points that are kept: the vertices themselves (costumes are small).
+                    const position = geometry.attributes.position;
+                    for (let i = 0; i < position.count; i++) {
+                        point.fromBufferAttribute(position, i).applyMatrix4(node.matrixWorld);
+                        if (keep(point.x, point.y, point.z)) {
+                            box.expandByPoint(point);
+                        }
+                    }
+                } else {
+                    if (node.isSkinnedMesh && typeof node.computeBoundingBox === 'function') {
+                        node.computeBoundingBox();
+                        part.copy(node.boundingBox);
+                    } else {
+                        if (!geometry.boundingBox) {
+                            geometry.computeBoundingBox();
+                        }
+                        part.copy(geometry.boundingBox);
+                    }
+                    part.applyMatrix4(node.matrixWorld);
+                    if (!keep || keep((part.min.x + part.max.x) / 2, (part.min.y + part.max.y) / 2,
+                        (part.min.z + part.max.z) / 2)) {
+                        box.union(part);
+                    }
+                }
+            }
+            node.children.forEach(visit);
+        };
+        visit(object);
+        return box;
+    };
+
     // Frame the avatar with the turntable facing front: the head and shoulders, or all of it.
+    // eslint-disable-next-line complexity
     const frame = () => {
         const angle = turntable.rotation.y;
         turntable.rotation.y = 0;
         turntable.updateMatrixWorld(true);
+        // Looked up each time: a costume may change the parts.
+        const head = avatar.group.getObjectByName('head');
+        const label = avatar.group.getObjectByName('label');
+        const costume = avatar.group.getObjectByName('costume');
+        // A device (a laptop, a monitor, a TV, a computer) hides the head: its screen is the face.
+        const device = !!(costume && head && !head.visible);
+        const closeup = !whole && !!head;
         const box = new THREE.Box3();
-        if (whole || !head) {
-            box.setFromObject(avatar.group);
+        if (!closeup) {
+            // Everything that is drawn: wide sleeves, a TV's sides and a computer's base fit too.
+            visibleBox(avatar.group, box);
+            if (box.isEmpty()) {
+                box.setFromObject(avatar.group);
+            }
+        } else if (device) {
+            // The device takes the place of the head: all of it, with its frame round the screen.
+            visibleBox(costume, box);
+            const screen = avatar.group.getObjectByName('facescreen');
+            if (screen) {
+                visibleBox(screen, box);
+            }
         } else {
-            box.setFromObject(head);
+            visibleBox(head, box);
+            if (box.isEmpty()) {
+                box.setFromObject(head);
+            }
+        }
+        // The close-up keeps the name tag above the head in view (a tall hair style or hat pushes
+        // it up).
+        if (closeup && !box.isEmpty() && label && label.visible) {
+            box.union(new THREE.Box3().setFromObject(label));
+        }
+        // A body costume's shoulders and sleeves: as wide as the costume is at the shoulders.
+        let shoulders = 0;
+        if (closeup && !device && costume && costume.visible && !box.isEmpty()) {
+            const low = box.min.y - SHOULDERS;
+            const high = box.min.y + 0.02;
+            const band = visibleBox(costume, new THREE.Box3(), (x, y) => y >= low && y <= high);
+            if (!band.isEmpty()) {
+                shoulders = Math.min(2 * Math.max(Math.abs(band.min.x), Math.abs(band.max.x)), SHOULDERS * WIDEST);
+            }
         }
         turntable.rotation.y = angle;
         turntable.updateMatrixWorld(true);
@@ -290,10 +405,12 @@ const createPreview = (canvas, design, config) => {
         const size = box.getSize(new THREE.Vector3());
         // Keep the axis in the middle of the picture: as wide as the widest side of it.
         const width = 2 * Math.max(Math.abs(box.min.x), Math.abs(box.max.x));
-        if (whole || !head) {
+        if (!closeup) {
             aim(box.min.y, box.max.y, width, size.z, 1.12);
+        } else if (device) {
+            aim(box.min.y, box.max.y + HEADROOM, width, size.z, 1.1);
         } else {
-            aim(box.min.y - SHOULDERS, box.max.y + HEADROOM, Math.max(width, SHOULDERS * 1.6), size.z, 1.05);
+            aim(box.min.y - SHOULDERS, box.max.y + HEADROOM, Math.max(width, SHOULDERS * 1.6, shoulders), size.z, 1.05);
         }
     };
 
@@ -320,6 +437,8 @@ const createPreview = (canvas, design, config) => {
     let returning = false;
     // Until then, follow the head while it grows or shrinks with the camera video.
     let videofade = -Infinity;
+    // Until then, follow the avatar's size while a costume model loads after a change.
+    let settleuntil = -Infinity;
     let dirty = true;
     let videoshown = false;
 
@@ -343,6 +462,8 @@ const createPreview = (canvas, design, config) => {
         renderer.render(scene, camera);
         dirty = false;
     };
+    // The preview's frame loop: turntable, return to the front, framing and the webcam fade.
+    // eslint-disable-next-line complexity
     const tick = (now) => {
         const dt = Math.min((now - last) / 1000, 0.1);
         last = now;
@@ -361,16 +482,17 @@ const createPreview = (canvas, design, config) => {
             moved = true;
         }
         const fading = now < videofade;
-        if (fading || videoshown) {
+        const settling = now < settleuntil;
+        if (fading || videoshown || settling) {
             if (typeof avatar.update === 'function') {
                 avatar.update(now);
             }
-            if (fading) {
+            if (fading || settling) {
                 frame();
             }
         }
-        // A live camera picture changes every frame.
-        if (moved || dirty || videoshown || fading) {
+        // A live camera picture changes every frame; a loading model appears when it arrives.
+        if (moved || dirty || videoshown || fading || settling) {
             draw();
         }
         window.requestAnimationFrame(tick);
@@ -450,9 +572,30 @@ const createPreview = (canvas, design, config) => {
     draw();
     window.requestAnimationFrame(tick);
 
+    /**
+     * Frame the avatar again once a loading costume model has arrived, when the builder says so.
+     *
+     * @param {*} result What the builder returned: a promise when it loads a model.
+     */
+    const whenLoaded = (result) => {
+        settleuntil = performance.now() + SETTLE_MS;
+        // The builder's whenDressed() waits for every model asked for (costume and model hat).
+        const dressed = typeof avatar.whenDressed === 'function' ? avatar.whenDressed() : result;
+        if (dressed && typeof dressed.then === 'function') {
+            Promise.resolve(dressed).then(() => {
+                frame();
+                dirty = true;
+                return null;
+            }).catch((e) => {
+                Log.debug('local_avatar: costume model: ' + e);
+            });
+        }
+    };
+    whenLoaded(avatar.ready);
+
     return {
-        update: (next) => {
-            avatar.setAppearance(next, next.picture ? config.pictureurl : '');
+        update: (next, nextassets) => {
+            whenLoaded(avatar.setAppearance(next, next.picture ? config.pictureurl : '', nextassets));
             frame();
             faceFront();
         },
@@ -476,15 +619,17 @@ const createPreview = (canvas, design, config) => {
  *
  * @param {HTMLButtonElement} button The button.
  * @param {Object} preview The preview.
- * @param {Object} str Strings.
  */
-const setupZoom = (button, preview, str) => {
+const setupZoom = (button, preview) => {
+    // A toggle button: the label stays "Show the whole avatar", aria-pressed (and the active look)
+    // says whether it is on.
     let whole = false;
     button.hidden = false;
     button.addEventListener('click', () => {
         whole = !whole;
         preview.setWhole(whole);
-        button.textContent = whole ? str.showface : str.showwhole;
+        button.setAttribute('aria-pressed', whole ? 'true' : 'false');
+        button.classList.toggle('active', whole);
     });
 };
 
@@ -581,11 +726,11 @@ export const init = async(config) => {
     let preview = null;
     if (hasWebgl()) {
         canvas.hidden = false;
-        preview = createPreview(canvas, readForm(form, config.defaults), config);
+        preview = createPreview(canvas, readForm(form, config.defaults), readAssets(form), config);
         if (preview) {
             fallback.hidden = true;
             previewhelp.hidden = false;
-            setupZoom(zoombutton, preview, str);
+            setupZoom(zoombutton, preview);
             setupCamera(camerabutton, preview, status, str);
         } else {
             canvas.hidden = true;
@@ -594,7 +739,7 @@ export const init = async(config) => {
 
     form.addEventListener('change', () => {
         if (preview) {
-            preview.update(readForm(form, config.defaults));
+            preview.update(readForm(form, config.defaults), readAssets(form));
         }
     });
 
@@ -602,7 +747,7 @@ export const init = async(config) => {
     resetbutton.addEventListener('click', () => {
         writeForm(form, config.defaults);
         if (preview) {
-            preview.update(readForm(form, config.defaults));
+            preview.update(readForm(form, config.defaults), readAssets(form));
         }
         status(str.resetdone);
     });
@@ -619,7 +764,7 @@ export const init = async(config) => {
         }])[0]).then((result) => {
             writeForm(form, result.design);
             if (preview) {
-                preview.update(readForm(form, config.defaults));
+                preview.update(readForm(form, config.defaults), readAssets(form));
             }
             removeform.hidden = false;
             if (nodesign) {

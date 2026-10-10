@@ -43,7 +43,7 @@ final class design {
     /** @var string[] The body and accent colours, in palette order. */
     public const COLOURS = [
         'red', 'orange', 'yellow', 'green', 'teal', 'cyan',
-        'blue', 'indigo', 'purple', 'pink', 'brown', 'grey',
+        'blue', 'indigo', 'purple', 'pink', 'brown', 'grey', 'black', 'white',
     ];
 
     /** @var string[] The hair colours (beards use the hair colour too). */
@@ -84,6 +84,8 @@ final class design {
         'pink' => '#d81b60',
         'brown' => '#6d4c41',
         'grey' => '#757575',
+        'black' => '#1b1b1d',
+        'white' => '#f4f4f2',
     ];
 
     /** @var string[] Swatch colours of the hair colours. */
@@ -124,8 +126,9 @@ final class design {
     /**
      * The allowed values of every key that takes a name.
      *
-     * "outfit" is reserved for costumes: today its only value is "none", so any other value is
-     * dropped and the key is always "none".
+     * "outfit" is "none" or the id of one of the costumes this plugin ships whose kind is body or
+     * device (costumes/costumes.json, see costumes::outfit_ids()). The hat "pirate" is a costume
+     * model too (costumes::HATS).
      *
      * @return array key => list of names
      */
@@ -142,8 +145,8 @@ final class design {
             'brows' => ['none', 'thin', 'thick', 'arched'],
             'nose' => ['none', 'small', 'round', 'pointed'],
             'beard' => ['none', 'stubble', 'moustache', 'goatee', 'full'],
-            'hat' => ['none', 'cap', 'beanie', 'sunhat'],
-            'outfit' => ['none'],
+            'hat' => ['none', 'cap', 'beanie', 'sunhat', 'pirate'],
+            'outfit' => array_merge(['none'], costumes::outfit_ids()),
         ];
     }
 

@@ -18,9 +18,11 @@
     @template local_avatar/designer
 
     The "My VR avatar" designer: a 3D preview and the choices as labelled radio groups and
-    checkboxes under four headings (head and face, hair, body, extras). Without
+    checkboxes under five headings (head and face, hair, body, costume, extras), the costumes as a
+    wrapping grid of thumbnails by category, and the credits of the costume models. Without
     JavaScript the form posts to the page; with it, local_avatar/designer saves through the web
-    service, draws the preview and shows the Reset, zoom and camera preview buttons.
+    service, draws the preview (loading the costume models named by the data-model attributes) and
+    shows the Reset, zoom (a toggle button, aria-pressed) and camera preview buttons.
 
     Classes required for JS:
     * none (data-region and data-action attributes)
@@ -30,13 +32,19 @@
     * sesskey - session key
     * sections - list of sections, each with id, heading, isextras and items; an item is either
       a radio group (radio: name, id, legend, isswatch and options, each option with value, id,
-      label, checked, swatch and palette) or a checkbox (check: name, id, groupid, legend, label
-      and checked); the section with isextras also shows the glasses and picture checkboxes
+      label, checked, swatch, palette, model and credit), a checkbox (check: name, id, groupid,
+      legend, label and checked) or the costume picker (costume: name, id, legend, none with value,
+      id, label and checked, and categories, each with id, legend and options, each option with
+      value, id, label, checked, thumb, model, credit and kind); the section with isextras also
+      shows the glasses and picture checkboxes
     * glasses - whether glasses are chosen
     * picture - whether the profile picture is chosen
     * pictureallowed - whether the site allows profile pictures on avatars
     * haspicture - whether the user has a profile picture to show
     * hasdesign - whether the user has saved a design
+    * hascredits - whether there are costume credits to list
+    * credits - the costume models' credits, each with name, title, credit and source (all
+      costumes, whatever their licence)
 
     The example below never has two closing braces next to each other: they would end this
     comment early.
@@ -107,7 +115,57 @@
                                     "label": "No hat",
                                     "checked": true,
                                     "swatch": "",
-                                    "palette": ""
+                                    "palette": "",
+                                    "model": "",
+                                    "credit": ""
+                                },
+                                {
+                                    "value": "pirate",
+                                    "id": "local-avatar-hat-pirate",
+                                    "label": "Pirate hat",
+                                    "checked": false,
+                                    "swatch": "",
+                                    "palette": "",
+                                    "model": "https://example.org/local/avatar/costumes/hat-pirate.glb",
+                                    "credit": "by Poly by Google, CC BY 3.0"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            },
+            {
+                "id": "local-avatar-section-costume",
+                "heading": "Costume",
+                "isextras": false,
+                "items": [
+                    {
+                        "costume": {
+                            "name": "outfit",
+                            "id": "local-avatar-group-outfit",
+                            "legend": "Costume",
+                            "none": {
+                                "value": "none",
+                                "id": "local-avatar-outfit-none",
+                                "label": "No costume",
+                                "checked": true
+                            },
+                            "categories": [
+                                {
+                                    "id": "local-avatar-costumes-suit",
+                                    "legend": "Suits",
+                                    "options": [
+                                        {
+                                            "value": "suit-tie",
+                                            "id": "local-avatar-outfit-suit-tie",
+                                            "label": "Suit and tie",
+                                            "checked": false,
+                                            "thumb": "https://example.org/theme/image.php/boost/local_avatar/1/costumes/suit-tie",
+                                            "model": "https://example.org/local/avatar/costumes/suit-tie.glb",
+                                            "credit": "by Ian MacGillivray, CC BY 3.0",
+                                            "kind": "body"
+                                        }
+                                    ]
                                 }
                             ]
                         }
@@ -119,7 +177,16 @@
         "picture": true,
         "pictureallowed": true,
         "haspicture": true,
-        "hasdesign": true
+        "hasdesign": true,
+        "hascredits": true,
+        "credits": [
+            {
+                "name": "Suit and tie",
+                "title": "Suit & Tie Guy",
+                "credit": "by Ian MacGillivray, CC BY 3.0",
+                "source": "https://poly.pizza/m/cgdjE3cst7f"
+            }
+        ]
     }
 }}
 <div class="local-avatar" data-region="local-avatar-designer">
@@ -143,7 +210,7 @@
             </p>
             <div class="local-avatar-previewbuttons">
                 <button type="button" class="btn btn-secondary btn-sm" data-action="zoom" aria-controls="local-avatar-stage"
-                    hidden>{{#str}}showwhole, local_avatar{{/str}}</button>
+                    aria-pressed="false" hidden>{{#str}}showwhole, local_avatar{{/str}}</button>
                 <button type="button" class="btn btn-secondary btn-sm" data-action="camera" aria-pressed="false" hidden>
                     {{#str}}camerapreview, local_avatar{{/str}}
                 </button>
@@ -164,18 +231,63 @@
                                     {{#options}}
                                         <div class="form-check form-check-inline local-avatar-option">
                                             <input class="form-check-input" type="radio" name="{{name}}" value="{{value}}" id="{{id}}"
-                                                {{#checked}}checked{{/checked}}>
+                                                {{#model}}data-model="{{model}}"{{/model}} {{#checked}}checked{{/checked}}>
                                             <label class="form-check-label" for="{{id}}">
                                                 {{#swatch}}
                                                     <span class="local-avatar-swatch" data-swatch="{{value}}" data-palette="{{palette}}"
                                                         style="background-color: {{swatch}};" aria-hidden="true"></span>
                                                 {{/swatch}}
                                                 {{label}}
+                                                {{#credit}}<span class="local-avatar-credit">{{credit}}</span>{{/credit}}
                                             </label>
                                         </div>
                                     {{/options}}
                                 </fieldset>
                             {{/radio}}
+                            {{#costume}}
+                                <fieldset class="local-avatar-group local-avatar-costumes" id="{{id}}"
+                                    aria-describedby="local-avatar-outfit-help">
+                                    <legend class="h6">{{legend}}</legend>
+                                    <p class="form-text text-muted" id="local-avatar-outfit-help">{{#str}}outfit_help, local_avatar{{/str}}</p>
+                                    {{#none}}
+                                        <div class="form-check local-avatar-option">
+                                            <input class="form-check-input" type="radio" name="{{name}}" value="{{value}}" id="{{id}}"
+                                                {{#checked}}checked{{/checked}}>
+                                            <label class="form-check-label" for="{{id}}">{{label}}</label>
+                                        </div>
+                                    {{/none}}
+                                    {{#categories}}
+                                        <fieldset class="local-avatar-costumecategory" id="{{id}}">
+                                            <legend class="local-avatar-costumelegend">{{legend}}</legend>
+                                            <div class="local-avatar-costumegrid">
+                                                {{#options}}
+                                                    <div class="local-avatar-costume">
+                                                        <input class="local-avatar-costume-input" type="radio" name="outfit"
+                                                            value="{{value}}" id="{{id}}" data-model="{{model}}" data-kind="{{kind}}"
+                                                            {{#checked}}checked{{/checked}}>
+                                                        <label class="local-avatar-costume-label" for="{{id}}">
+                                                            <img class="local-avatar-costume-thumb" src="{{thumb}}" alt="" width="96" height="96"
+                                                                loading="lazy">
+                                                            <span class="local-avatar-costume-name">{{label}}</span>
+                                                            {{#credit}}<span class="local-avatar-credit">{{credit}}</span>{{/credit}}
+                                                        </label>
+                                                    </div>
+                                                {{/options}}
+                                            </div>
+                                        </fieldset>
+                                    {{/categories}}
+                                </fieldset>
+                                {{#hascredits}}
+                                    <details class="local-avatar-credits">
+                                        <summary>{{#str}}costumecredits, local_avatar{{/str}}</summary>
+                                        <ul class="small">
+                                            {{#credits}}
+                                                <li>{{name}}: <a href="{{source}}">{{title}}</a> {{credit}}</li>
+                                            {{/credits}}
+                                        </ul>
+                                    </details>
+                                {{/hascredits}}
+                            {{/costume}}
                             {{#check}}
                                 <fieldset class="local-avatar-group" id="{{groupid}}">
                                     <legend class="h6">{{legend}}</legend>

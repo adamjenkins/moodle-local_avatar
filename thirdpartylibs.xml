@@ -1,0 +1,543 @@
+<?xml version="1.0"?>
+<libraries>
+  <library>
+    <location>costumes/pirate-captain.glb</location>
+    <name>Pretty generic Pirate Captain</name>
+    <description>Pretty generic Pirate Captain, adapted as a VR avatar costume (head removed or screen marked, re-oriented, scaled, textures resized); thumbnail pix/costumes/pirate-captain.png rendered from it. "Pretty generic Pirate Captain" (Pirate) by AliceCassie, CC0 1.0, https://poly.pizza/m/CwWl7iqnxN</description>
+    <version>adapted 2026-10-10</version>
+    <license>CC0</license>
+    <licenseversion>1.0</licenseversion>
+    <repository>https://poly.pizza/m/CwWl7iqnxN</repository>
+    <copyrights>
+      <copyright>AliceCassie</copyright>
+    </copyrights>
+  </library>
+  <library>
+    <location>costumes/pirate-woman.glb</location>
+    <name>Pirate Woman</name>
+    <description>Pirate Woman, adapted as a VR avatar costume (head removed or screen marked, re-oriented, scaled, textures resized); thumbnail pix/costumes/pirate-woman.png rendered from it. Pirate Woman by Polygonal Mind, CC0 1.0, https://poly.pizza/m/qRDrzfs8j9</description>
+    <version>adapted 2026-10-10</version>
+    <license>CC0</license>
+    <licenseversion>1.0</licenseversion>
+    <repository>https://poly.pizza/m/qRDrzfs8j9</repository>
+    <copyrights>
+      <copyright>Polygonal Mind</copyright>
+    </copyrights>
+  </library>
+  <library>
+    <location>costumes/hat-pirate.glb</location>
+    <name>Pirate hat</name>
+    <description>Pirate hat, adapted as a VR avatar costume (head removed or screen marked, re-oriented, scaled, textures resized); thumbnail pix/costumes/hat-pirate.png rendered from it. Pirate hat by Poly by Google, CC-BY 3.0, https://poly.pizza/m/9QEds6cYAy6</description>
+    <version>adapted 2026-10-10</version>
+    <license>CC-BY</license>
+    <licenseversion>3.0</licenseversion>
+    <repository>https://poly.pizza/m/9QEds6cYAy6</repository>
+    <copyrights>
+      <copyright>Poly by Google</copyright>
+    </copyrights>
+  </library>
+  <library>
+    <location>costumes/business-dude.glb</location>
+    <name>Business Dude</name>
+    <description>Business Dude, adapted as a VR avatar costume (head removed or screen marked, re-oriented, scaled, textures resized); thumbnail pix/costumes/business-dude.png rendered from it. Business Dude by Polygonal Mind, CC0-1.0, https://poly.pizza/m/odKDM2t8Cr</description>
+    <version>adapted 2026-10-10</version>
+    <license>CC0</license>
+    <licenseversion>1.0</licenseversion>
+    <repository>https://poly.pizza/m/odKDM2t8Cr</repository>
+    <copyrights>
+      <copyright>Polygonal Mind</copyright>
+    </copyrights>
+  </library>
+  <library>
+    <location>costumes/suit-tie.glb</location>
+    <name>Suit &amp; Tie Guy</name>
+    <description>Suit &amp; Tie Guy, adapted as a VR avatar costume (head removed or screen marked, re-oriented, scaled, textures resized); thumbnail pix/costumes/suit-tie.png rendered from it. Suit &amp; Tie Guy by Ian MacGillivray, CC-BY-3.0, https://poly.pizza/m/cgdjE3cst7f</description>
+    <version>adapted 2026-10-10</version>
+    <license>CC-BY</license>
+    <licenseversion>3.0</licenseversion>
+    <repository>https://poly.pizza/m/cgdjE3cst7f</repository>
+    <copyrights>
+      <copyright>Ian MacGillivray</copyright>
+    </copyrights>
+  </library>
+  <library>
+    <location>costumes/sunflower.glb</location>
+    <name>Sun Flower Person</name>
+    <description>Sun Flower Person, adapted as a VR avatar costume (head removed or screen marked, re-oriented, scaled, textures resized); thumbnail pix/costumes/sunflower.png rendered from it. Sun Flower Person by Polygonal Mind, CC0, https://poly.pizza/m/5MGoojA1LB</description>
+    <version>adapted 2026-10-10</version>
+    <license>CC0</license>
+    <licenseversion>1.0</licenseversion>
+    <repository>https://poly.pizza/m/5MGoojA1LB</repository>
+    <copyrights>
+      <copyright>Polygonal Mind</copyright>
+    </copyrights>
+  </library>
+  <library>
+    <location>costumes/cactus.glb</location>
+    <name>Cactus Character</name>
+    <description>Cactus Character, adapted as a VR avatar costume (head removed or screen marked, re-oriented, scaled, textures resized); thumbnail pix/costumes/cactus.png rendered from it. Cactus Character by Polygonal Mind, CC0, https://poly.pizza/m/8XdFnQQsBK</description>
+    <version>adapted 2026-10-10</version>
+    <license>CC0</license>
+    <licenseversion>1.0</licenseversion>
+    <repository>https://poly.pizza/m/8XdFnQQsBK</repository>
+    <copyrights>
+      <copyright>Polygonal Mind</copyright>
+    </copyrights>
+  </library>
+  <library>
+    <location>costumes/alien-green.glb</location>
+    <name>Alien</name>
+    <description>Alien, adapted as a VR avatar costume (head removed or screen marked, re-oriented, scaled, textures resized); thumbnail pix/costumes/alien-green.png rendered from it. Alien by Polygonal Mind (100Avatars), CC0, https://poly.pizza/m/roXp0kV2X4</description>
+    <version>adapted 2026-10-10</version>
+    <license>CC0</license>
+    <licenseversion>1.0</licenseversion>
+    <repository>https://poly.pizza/m/roXp0kV2X4</repository>
+    <copyrights>
+      <copyright>Polygonal Mind</copyright>
+    </copyrights>
+  </library>
+  <library>
+    <location>costumes/alien-pink.glb</location>
+    <name>Alien</name>
+    <description>Alien, adapted as a VR avatar costume (head removed or screen marked, re-oriented, scaled, textures resized); thumbnail pix/costumes/alien-pink.png rendered from it. Alien by Polygonal Mind (100Avatars), CC0, https://poly.pizza/m/a5T5a6j6tl</description>
+    <version>adapted 2026-10-10</version>
+    <license>CC0</license>
+    <licenseversion>1.0</licenseversion>
+    <repository>https://poly.pizza/m/a5T5a6j6tl</repository>
+    <copyrights>
+      <copyright>Polygonal Mind</copyright>
+    </copyrights>
+  </library>
+  <library>
+    <location>costumes/robot-screen.glb</location>
+    <name>Robot</name>
+    <description>Robot, adapted as a VR avatar costume (head removed or screen marked, re-oriented, scaled, textures resized); thumbnail pix/costumes/robot-screen.png rendered from it. Robot (screen-face bot) by Polygonal Mind, CC0 1.0, https://poly.pizza/m/ejDr8lRglP</description>
+    <version>adapted 2026-10-10</version>
+    <license>CC0</license>
+    <licenseversion>1.0</licenseversion>
+    <repository>https://poly.pizza/m/ejDr8lRglP</repository>
+    <copyrights>
+      <copyright>Polygonal Mind</copyright>
+    </copyrights>
+  </library>
+  <library>
+    <location>costumes/lalobot.glb</location>
+    <name>Lalobot</name>
+    <description>Lalobot, adapted as a VR avatar costume (head removed or screen marked, re-oriented, scaled, textures resized); thumbnail pix/costumes/lalobot.png rendered from it. Lalobot by Polygonal Mind, CC0 1.0, https://poly.pizza/m/tKdNH5jzNt</description>
+    <version>adapted 2026-10-10</version>
+    <license>CC0</license>
+    <licenseversion>1.0</licenseversion>
+    <repository>https://poly.pizza/m/tKdNH5jzNt</repository>
+    <copyrights>
+      <copyright>Polygonal Mind</copyright>
+    </copyrights>
+  </library>
+  <library>
+    <location>costumes/device-laptop.glb</location>
+    <name>Laptop</name>
+    <description>Laptop, adapted as a VR avatar costume (head removed or screen marked, re-oriented, scaled, textures resized); thumbnail pix/costumes/device-laptop.png rendered from it. Laptop by Kenney, CC0, https://poly.pizza/m/GnbwSUiVty</description>
+    <version>adapted 2026-10-10</version>
+    <license>CC0</license>
+    <licenseversion>1.0</licenseversion>
+    <repository>https://poly.pizza/m/GnbwSUiVty</repository>
+    <copyrights>
+      <copyright>Kenney</copyright>
+    </copyrights>
+  </library>
+  <library>
+    <location>costumes/device-monitor.glb</location>
+    <name>Computer Screen</name>
+    <description>Computer Screen, adapted as a VR avatar costume (head removed or screen marked, re-oriented, scaled, textures resized); thumbnail pix/costumes/device-monitor.png rendered from it. Computer Screen by Kenney, CC0, https://poly.pizza/m/V5Qo141OcB</description>
+    <version>adapted 2026-10-10</version>
+    <license>CC0</license>
+    <licenseversion>1.0</licenseversion>
+    <repository>https://poly.pizza/m/V5Qo141OcB</repository>
+    <copyrights>
+      <copyright>Kenney</copyright>
+    </copyrights>
+  </library>
+  <library>
+    <location>costumes/device-tv.glb</location>
+    <name>Television Vintage</name>
+    <description>Television Vintage, adapted as a VR avatar costume (head removed or screen marked, re-oriented, scaled, textures resized); thumbnail pix/costumes/device-tv.png rendered from it. Television Vintage by Kenney, CC0, https://poly.pizza/m/aSmz6H8aeu</description>
+    <version>adapted 2026-10-10</version>
+    <license>CC0</license>
+    <licenseversion>1.0</licenseversion>
+    <repository>https://poly.pizza/m/aSmz6H8aeu</repository>
+    <copyrights>
+      <copyright>Kenney</copyright>
+    </copyrights>
+  </library>
+  <library>
+    <location>costumes/device-computer.glb</location>
+    <name>Simple computer</name>
+    <description>Simple computer, adapted as a VR avatar costume (head removed or screen marked, re-oriented, scaled, textures resized); thumbnail pix/costumes/device-computer.png rendered from it. Simple computer by Robert Schlyter, CC-BY 3.0, https://poly.pizza/m/doMMnviJrGi</description>
+    <version>adapted 2026-10-10</version>
+    <license>CC-BY</license>
+    <licenseversion>3.0</licenseversion>
+    <repository>https://poly.pizza/m/doMMnviJrGi</repository>
+    <copyrights>
+      <copyright>Robert Schlyter</copyright>
+    </copyrights>
+  </library>
+  <library>
+    <location>costumes/blocky-a.glb</location>
+    <name>Blocky Characters (character-a)</name>
+    <description>Blocky Characters (character-a), adapted as a VR avatar costume (head removed or screen marked, re-oriented, scaled, textures resized); thumbnail pix/costumes/blocky-a.png rendered from it. Blocky Characters (character-a) by Kenney, CC0, https://kenney.nl/assets/blocky-characters</description>
+    <version>adapted 2026-10-10</version>
+    <license>CC0</license>
+    <licenseversion>1.0</licenseversion>
+    <repository>https://kenney.nl/assets/blocky-characters</repository>
+    <copyrights>
+      <copyright>Kenney</copyright>
+    </copyrights>
+  </library>
+  <library>
+    <location>costumes/blocky-b.glb</location>
+    <name>Blocky Characters (character-b)</name>
+    <description>Blocky Characters (character-b), adapted as a VR avatar costume (head removed or screen marked, re-oriented, scaled, textures resized); thumbnail pix/costumes/blocky-b.png rendered from it. Blocky Characters (character-b) by Kenney, CC0, https://kenney.nl/assets/blocky-characters</description>
+    <version>adapted 2026-10-10</version>
+    <license>CC0</license>
+    <licenseversion>1.0</licenseversion>
+    <repository>https://kenney.nl/assets/blocky-characters</repository>
+    <copyrights>
+      <copyright>Kenney</copyright>
+    </copyrights>
+  </library>
+  <library>
+    <location>costumes/blocky-c.glb</location>
+    <name>Blocky Characters (character-c)</name>
+    <description>Blocky Characters (character-c), adapted as a VR avatar costume (head removed or screen marked, re-oriented, scaled, textures resized); thumbnail pix/costumes/blocky-c.png rendered from it. Blocky Characters (character-c) by Kenney, CC0, https://kenney.nl/assets/blocky-characters</description>
+    <version>adapted 2026-10-10</version>
+    <license>CC0</license>
+    <licenseversion>1.0</licenseversion>
+    <repository>https://kenney.nl/assets/blocky-characters</repository>
+    <copyrights>
+      <copyright>Kenney</copyright>
+    </copyrights>
+  </library>
+  <library>
+    <location>costumes/blocky-d.glb</location>
+    <name>Blocky Characters (character-d)</name>
+    <description>Blocky Characters (character-d), adapted as a VR avatar costume (head removed or screen marked, re-oriented, scaled, textures resized); thumbnail pix/costumes/blocky-d.png rendered from it. Blocky Characters (character-d) by Kenney, CC0, https://kenney.nl/assets/blocky-characters</description>
+    <version>adapted 2026-10-10</version>
+    <license>CC0</license>
+    <licenseversion>1.0</licenseversion>
+    <repository>https://kenney.nl/assets/blocky-characters</repository>
+    <copyrights>
+      <copyright>Kenney</copyright>
+    </copyrights>
+  </library>
+  <library>
+    <location>costumes/blocky-e.glb</location>
+    <name>Blocky Characters (character-e)</name>
+    <description>Blocky Characters (character-e), adapted as a VR avatar costume (head removed or screen marked, re-oriented, scaled, textures resized); thumbnail pix/costumes/blocky-e.png rendered from it. Blocky Characters (character-e) by Kenney, CC0, https://kenney.nl/assets/blocky-characters</description>
+    <version>adapted 2026-10-10</version>
+    <license>CC0</license>
+    <licenseversion>1.0</licenseversion>
+    <repository>https://kenney.nl/assets/blocky-characters</repository>
+    <copyrights>
+      <copyright>Kenney</copyright>
+    </copyrights>
+  </library>
+  <library>
+    <location>costumes/blocky-f.glb</location>
+    <name>Blocky Characters (character-f)</name>
+    <description>Blocky Characters (character-f), adapted as a VR avatar costume (head removed or screen marked, re-oriented, scaled, textures resized); thumbnail pix/costumes/blocky-f.png rendered from it. Blocky Characters (character-f) by Kenney, CC0, https://kenney.nl/assets/blocky-characters</description>
+    <version>adapted 2026-10-10</version>
+    <license>CC0</license>
+    <licenseversion>1.0</licenseversion>
+    <repository>https://kenney.nl/assets/blocky-characters</repository>
+    <copyrights>
+      <copyright>Kenney</copyright>
+    </copyrights>
+  </library>
+  <library>
+    <location>costumes/blocky-g.glb</location>
+    <name>Blocky Characters (character-g)</name>
+    <description>Blocky Characters (character-g), adapted as a VR avatar costume (head removed or screen marked, re-oriented, scaled, textures resized); thumbnail pix/costumes/blocky-g.png rendered from it. Blocky Characters (character-g) by Kenney, CC0, https://kenney.nl/assets/blocky-characters</description>
+    <version>adapted 2026-10-10</version>
+    <license>CC0</license>
+    <licenseversion>1.0</licenseversion>
+    <repository>https://kenney.nl/assets/blocky-characters</repository>
+    <copyrights>
+      <copyright>Kenney</copyright>
+    </copyrights>
+  </library>
+  <library>
+    <location>costumes/blocky-h.glb</location>
+    <name>Blocky Characters (character-h)</name>
+    <description>Blocky Characters (character-h), adapted as a VR avatar costume (head removed or screen marked, re-oriented, scaled, textures resized); thumbnail pix/costumes/blocky-h.png rendered from it. Blocky Characters (character-h) by Kenney, CC0, https://kenney.nl/assets/blocky-characters</description>
+    <version>adapted 2026-10-10</version>
+    <license>CC0</license>
+    <licenseversion>1.0</licenseversion>
+    <repository>https://kenney.nl/assets/blocky-characters</repository>
+    <copyrights>
+      <copyright>Kenney</copyright>
+    </copyrights>
+  </library>
+  <library>
+    <location>costumes/blocky-i.glb</location>
+    <name>Blocky Characters (character-i)</name>
+    <description>Blocky Characters (character-i), adapted as a VR avatar costume (head removed or screen marked, re-oriented, scaled, textures resized); thumbnail pix/costumes/blocky-i.png rendered from it. Blocky Characters (character-i) by Kenney, CC0, https://kenney.nl/assets/blocky-characters</description>
+    <version>adapted 2026-10-10</version>
+    <license>CC0</license>
+    <licenseversion>1.0</licenseversion>
+    <repository>https://kenney.nl/assets/blocky-characters</repository>
+    <copyrights>
+      <copyright>Kenney</copyright>
+    </copyrights>
+  </library>
+  <library>
+    <location>costumes/blocky-j.glb</location>
+    <name>Blocky Characters (character-j)</name>
+    <description>Blocky Characters (character-j), adapted as a VR avatar costume (head removed or screen marked, re-oriented, scaled, textures resized); thumbnail pix/costumes/blocky-j.png rendered from it. Blocky Characters (character-j) by Kenney, CC0, https://kenney.nl/assets/blocky-characters</description>
+    <version>adapted 2026-10-10</version>
+    <license>CC0</license>
+    <licenseversion>1.0</licenseversion>
+    <repository>https://kenney.nl/assets/blocky-characters</repository>
+    <copyrights>
+      <copyright>Kenney</copyright>
+    </copyrights>
+  </library>
+  <library>
+    <location>costumes/blocky-k.glb</location>
+    <name>Blocky Characters (character-k)</name>
+    <description>Blocky Characters (character-k), adapted as a VR avatar costume (head removed or screen marked, re-oriented, scaled, textures resized); thumbnail pix/costumes/blocky-k.png rendered from it. Blocky Characters (character-k) by Kenney, CC0, https://kenney.nl/assets/blocky-characters</description>
+    <version>adapted 2026-10-10</version>
+    <license>CC0</license>
+    <licenseversion>1.0</licenseversion>
+    <repository>https://kenney.nl/assets/blocky-characters</repository>
+    <copyrights>
+      <copyright>Kenney</copyright>
+    </copyrights>
+  </library>
+  <library>
+    <location>costumes/blocky-l.glb</location>
+    <name>Blocky Characters (character-l)</name>
+    <description>Blocky Characters (character-l), adapted as a VR avatar costume (head removed or screen marked, re-oriented, scaled, textures resized); thumbnail pix/costumes/blocky-l.png rendered from it. Blocky Characters (character-l) by Kenney, CC0, https://kenney.nl/assets/blocky-characters</description>
+    <version>adapted 2026-10-10</version>
+    <license>CC0</license>
+    <licenseversion>1.0</licenseversion>
+    <repository>https://kenney.nl/assets/blocky-characters</repository>
+    <copyrights>
+      <copyright>Kenney</copyright>
+    </copyrights>
+  </library>
+  <library>
+    <location>costumes/blocky-m.glb</location>
+    <name>Blocky Characters (character-m)</name>
+    <description>Blocky Characters (character-m), adapted as a VR avatar costume (head removed or screen marked, re-oriented, scaled, textures resized); thumbnail pix/costumes/blocky-m.png rendered from it. Blocky Characters (character-m) by Kenney, CC0, https://kenney.nl/assets/blocky-characters</description>
+    <version>adapted 2026-10-10</version>
+    <license>CC0</license>
+    <licenseversion>1.0</licenseversion>
+    <repository>https://kenney.nl/assets/blocky-characters</repository>
+    <copyrights>
+      <copyright>Kenney</copyright>
+    </copyrights>
+  </library>
+  <library>
+    <location>costumes/blocky-n.glb</location>
+    <name>Blocky Characters (character-n)</name>
+    <description>Blocky Characters (character-n), adapted as a VR avatar costume (head removed or screen marked, re-oriented, scaled, textures resized); thumbnail pix/costumes/blocky-n.png rendered from it. Blocky Characters (character-n) by Kenney, CC0, https://kenney.nl/assets/blocky-characters</description>
+    <version>adapted 2026-10-10</version>
+    <license>CC0</license>
+    <licenseversion>1.0</licenseversion>
+    <repository>https://kenney.nl/assets/blocky-characters</repository>
+    <copyrights>
+      <copyright>Kenney</copyright>
+    </copyrights>
+  </library>
+  <library>
+    <location>costumes/blocky-o.glb</location>
+    <name>Blocky Characters (character-o)</name>
+    <description>Blocky Characters (character-o), adapted as a VR avatar costume (head removed or screen marked, re-oriented, scaled, textures resized); thumbnail pix/costumes/blocky-o.png rendered from it. Blocky Characters (character-o) by Kenney, CC0, https://kenney.nl/assets/blocky-characters</description>
+    <version>adapted 2026-10-10</version>
+    <license>CC0</license>
+    <licenseversion>1.0</licenseversion>
+    <repository>https://kenney.nl/assets/blocky-characters</repository>
+    <copyrights>
+      <copyright>Kenney</copyright>
+    </copyrights>
+  </library>
+  <library>
+    <location>costumes/blocky-p.glb</location>
+    <name>Blocky Characters (character-p)</name>
+    <description>Blocky Characters (character-p), adapted as a VR avatar costume (head removed or screen marked, re-oriented, scaled, textures resized); thumbnail pix/costumes/blocky-p.png rendered from it. Blocky Characters (character-p) by Kenney, CC0, https://kenney.nl/assets/blocky-characters</description>
+    <version>adapted 2026-10-10</version>
+    <license>CC0</license>
+    <licenseversion>1.0</licenseversion>
+    <repository>https://kenney.nl/assets/blocky-characters</repository>
+    <copyrights>
+      <copyright>Kenney</copyright>
+    </copyrights>
+  </library>
+  <library>
+    <location>costumes/blocky-q.glb</location>
+    <name>Blocky Characters (character-q)</name>
+    <description>Blocky Characters (character-q), adapted as a VR avatar costume (head removed or screen marked, re-oriented, scaled, textures resized); thumbnail pix/costumes/blocky-q.png rendered from it. Blocky Characters (character-q) by Kenney, CC0, https://kenney.nl/assets/blocky-characters</description>
+    <version>adapted 2026-10-10</version>
+    <license>CC0</license>
+    <licenseversion>1.0</licenseversion>
+    <repository>https://kenney.nl/assets/blocky-characters</repository>
+    <copyrights>
+      <copyright>Kenney</copyright>
+    </copyrights>
+  </library>
+  <library>
+    <location>costumes/blocky-r.glb</location>
+    <name>Blocky Characters (character-r)</name>
+    <description>Blocky Characters (character-r), adapted as a VR avatar costume (head removed or screen marked, re-oriented, scaled, textures resized); thumbnail pix/costumes/blocky-r.png rendered from it. Blocky Characters (character-r) by Kenney, CC0, https://kenney.nl/assets/blocky-characters</description>
+    <version>adapted 2026-10-10</version>
+    <license>CC0</license>
+    <licenseversion>1.0</licenseversion>
+    <repository>https://kenney.nl/assets/blocky-characters</repository>
+    <copyrights>
+      <copyright>Kenney</copyright>
+    </copyrights>
+  </library>
+  <library>
+    <location>costumes/mini-male-a.glb</location>
+    <name>Mini Characters (character-male-a)</name>
+    <description>Mini Characters (character-male-a), adapted as a VR avatar costume (head removed or screen marked, re-oriented, scaled, textures resized); thumbnail pix/costumes/mini-male-a.png rendered from it. Mini Characters (character-male-a) by Kenney, CC0, https://kenney.nl/assets/mini-characters</description>
+    <version>adapted 2026-10-10</version>
+    <license>CC0</license>
+    <licenseversion>1.0</licenseversion>
+    <repository>https://kenney.nl/assets/mini-characters</repository>
+    <copyrights>
+      <copyright>Kenney</copyright>
+    </copyrights>
+  </library>
+  <library>
+    <location>costumes/mini-male-b.glb</location>
+    <name>Mini Characters (character-male-b)</name>
+    <description>Mini Characters (character-male-b), adapted as a VR avatar costume (head removed or screen marked, re-oriented, scaled, textures resized); thumbnail pix/costumes/mini-male-b.png rendered from it. Mini Characters (character-male-b) by Kenney, CC0, https://kenney.nl/assets/mini-characters</description>
+    <version>adapted 2026-10-10</version>
+    <license>CC0</license>
+    <licenseversion>1.0</licenseversion>
+    <repository>https://kenney.nl/assets/mini-characters</repository>
+    <copyrights>
+      <copyright>Kenney</copyright>
+    </copyrights>
+  </library>
+  <library>
+    <location>costumes/mini-male-c.glb</location>
+    <name>Mini Characters (character-male-c)</name>
+    <description>Mini Characters (character-male-c), adapted as a VR avatar costume (head removed or screen marked, re-oriented, scaled, textures resized); thumbnail pix/costumes/mini-male-c.png rendered from it. Mini Characters (character-male-c) by Kenney, CC0, https://kenney.nl/assets/mini-characters</description>
+    <version>adapted 2026-10-10</version>
+    <license>CC0</license>
+    <licenseversion>1.0</licenseversion>
+    <repository>https://kenney.nl/assets/mini-characters</repository>
+    <copyrights>
+      <copyright>Kenney</copyright>
+    </copyrights>
+  </library>
+  <library>
+    <location>costumes/mini-male-d.glb</location>
+    <name>Mini Characters (character-male-d)</name>
+    <description>Mini Characters (character-male-d), adapted as a VR avatar costume (head removed or screen marked, re-oriented, scaled, textures resized); thumbnail pix/costumes/mini-male-d.png rendered from it. Mini Characters (character-male-d) by Kenney, CC0, https://kenney.nl/assets/mini-characters</description>
+    <version>adapted 2026-10-10</version>
+    <license>CC0</license>
+    <licenseversion>1.0</licenseversion>
+    <repository>https://kenney.nl/assets/mini-characters</repository>
+    <copyrights>
+      <copyright>Kenney</copyright>
+    </copyrights>
+  </library>
+  <library>
+    <location>costumes/mini-male-e.glb</location>
+    <name>Mini Characters (character-male-e)</name>
+    <description>Mini Characters (character-male-e), adapted as a VR avatar costume (head removed or screen marked, re-oriented, scaled, textures resized); thumbnail pix/costumes/mini-male-e.png rendered from it. Mini Characters (character-male-e) by Kenney, CC0, https://kenney.nl/assets/mini-characters</description>
+    <version>adapted 2026-10-10</version>
+    <license>CC0</license>
+    <licenseversion>1.0</licenseversion>
+    <repository>https://kenney.nl/assets/mini-characters</repository>
+    <copyrights>
+      <copyright>Kenney</copyright>
+    </copyrights>
+  </library>
+  <library>
+    <location>costumes/mini-male-f.glb</location>
+    <name>Mini Characters (character-male-f)</name>
+    <description>Mini Characters (character-male-f), adapted as a VR avatar costume (head removed or screen marked, re-oriented, scaled, textures resized); thumbnail pix/costumes/mini-male-f.png rendered from it. Mini Characters (character-male-f) by Kenney, CC0, https://kenney.nl/assets/mini-characters</description>
+    <version>adapted 2026-10-10</version>
+    <license>CC0</license>
+    <licenseversion>1.0</licenseversion>
+    <repository>https://kenney.nl/assets/mini-characters</repository>
+    <copyrights>
+      <copyright>Kenney</copyright>
+    </copyrights>
+  </library>
+  <library>
+    <location>costumes/mini-female-a.glb</location>
+    <name>Mini Characters (character-female-a)</name>
+    <description>Mini Characters (character-female-a), adapted as a VR avatar costume (head removed or screen marked, re-oriented, scaled, textures resized); thumbnail pix/costumes/mini-female-a.png rendered from it. Mini Characters (character-female-a) by Kenney, CC0, https://kenney.nl/assets/mini-characters</description>
+    <version>adapted 2026-10-10</version>
+    <license>CC0</license>
+    <licenseversion>1.0</licenseversion>
+    <repository>https://kenney.nl/assets/mini-characters</repository>
+    <copyrights>
+      <copyright>Kenney</copyright>
+    </copyrights>
+  </library>
+  <library>
+    <location>costumes/mini-female-b.glb</location>
+    <name>Mini Characters (character-female-b)</name>
+    <description>Mini Characters (character-female-b), adapted as a VR avatar costume (head removed or screen marked, re-oriented, scaled, textures resized); thumbnail pix/costumes/mini-female-b.png rendered from it. Mini Characters (character-female-b) by Kenney, CC0, https://kenney.nl/assets/mini-characters</description>
+    <version>adapted 2026-10-10</version>
+    <license>CC0</license>
+    <licenseversion>1.0</licenseversion>
+    <repository>https://kenney.nl/assets/mini-characters</repository>
+    <copyrights>
+      <copyright>Kenney</copyright>
+    </copyrights>
+  </library>
+  <library>
+    <location>costumes/mini-female-c.glb</location>
+    <name>Mini Characters (character-female-c)</name>
+    <description>Mini Characters (character-female-c), adapted as a VR avatar costume (head removed or screen marked, re-oriented, scaled, textures resized); thumbnail pix/costumes/mini-female-c.png rendered from it. Mini Characters (character-female-c) by Kenney, CC0, https://kenney.nl/assets/mini-characters</description>
+    <version>adapted 2026-10-10</version>
+    <license>CC0</license>
+    <licenseversion>1.0</licenseversion>
+    <repository>https://kenney.nl/assets/mini-characters</repository>
+    <copyrights>
+      <copyright>Kenney</copyright>
+    </copyrights>
+  </library>
+  <library>
+    <location>costumes/mini-female-d.glb</location>
+    <name>Mini Characters (character-female-d)</name>
+    <description>Mini Characters (character-female-d), adapted as a VR avatar costume (head removed or screen marked, re-oriented, scaled, textures resized); thumbnail pix/costumes/mini-female-d.png rendered from it. Mini Characters (character-female-d) by Kenney, CC0, https://kenney.nl/assets/mini-characters</description>
+    <version>adapted 2026-10-10</version>
+    <license>CC0</license>
+    <licenseversion>1.0</licenseversion>
+    <repository>https://kenney.nl/assets/mini-characters</repository>
+    <copyrights>
+      <copyright>Kenney</copyright>
+    </copyrights>
+  </library>
+  <library>
+    <location>costumes/mini-female-e.glb</location>
+    <name>Mini Characters (character-female-e)</name>
+    <description>Mini Characters (character-female-e), adapted as a VR avatar costume (head removed or screen marked, re-oriented, scaled, textures resized); thumbnail pix/costumes/mini-female-e.png rendered from it. Mini Characters (character-female-e) by Kenney, CC0, https://kenney.nl/assets/mini-characters</description>
+    <version>adapted 2026-10-10</version>
+    <license>CC0</license>
+    <licenseversion>1.0</licenseversion>
+    <repository>https://kenney.nl/assets/mini-characters</repository>
+    <copyrights>
+      <copyright>Kenney</copyright>
+    </copyrights>
+  </library>
+  <library>
+    <location>costumes/mini-female-f.glb</location>
+    <name>Mini Characters (character-female-f)</name>
+    <description>Mini Characters (character-female-f), adapted as a VR avatar costume (head removed or screen marked, re-oriented, scaled, textures resized); thumbnail pix/costumes/mini-female-f.png rendered from it. Mini Characters (character-female-f) by Kenney, CC0, https://kenney.nl/assets/mini-characters</description>
+    <version>adapted 2026-10-10</version>
+    <license>CC0</license>
+    <licenseversion>1.0</licenseversion>
+    <repository>https://kenney.nl/assets/mini-characters</repository>
+    <copyrights>
+      <copyright>Kenney</copyright>
+    </copyrights>
+  </library>
+</libraries>

@@ -56,7 +56,8 @@ if ($action === 'remove') {
     require_sesskey();
     $input = [];
     foreach (array_keys(design::choices()) as $key) {
-        $input[$key] = optional_param($key, '', PARAM_ALPHA);
+        // Costume ids have hyphens and digits ("pirate-captain"); clean() keeps only allowed names.
+        $input[$key] = optional_param($key, '', PARAM_ALPHANUMEXT);
     }
     $input['ears'] = optional_param('ears', 0, PARAM_BOOL);
     $input['glasses'] = optional_param('glasses', 0, PARAM_BOOL);

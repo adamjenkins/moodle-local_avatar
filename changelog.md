@@ -5,7 +5,7 @@ All notable changes to this plugin are documented here. The format follows
 
 ## [0.1.0] - Unreleased
 
-ALPHA. First release, Moodle 5.2 and 5.3, requires mod_vrroom 2026101000. Not yet tagged.
+ALPHA. First release, Moodle 5.2 and 5.3, requires mod_vrroom 2026101001. Not yet tagged.
 
 ### Added
 
@@ -27,3 +27,19 @@ ALPHA. First release, Moodle 5.2 and 5.3, requires mod_vrroom 2026101000. Not ye
   `eyes`, `brows`, `nose`, `ears` (flag), `beard` (in the hair colour), and the reserved `outfit`
   (only `none`). The designer page shows them under four headings; `local_avatar_save_design` and
   `local_avatar_get_design` return the new keys.
+- Costumes: `costumes/<id>.glb` (45 models: 44 outfits of kind body or device, and the accessory
+  `hat-pirate`), the manifest `costumes/costumes.json`, thumbnails `pix/costumes/<id>.png`,
+  `\local_avatar\local\costumes`, credits in `thirdpartylibs.xml` and the README. `outfit` takes
+  `none` or a manifest id of kind body/device; `hat` gains `pirate`. The hook listener passes the
+  models' URLs as `set_appearance()`'s `$assets` (`outfit`, `hat`); the designer has a Costume
+  section (thumbnail radio grid by category, CC BY credits, a credits list) and passes the assets to
+  the avatar builder. `outfit` is `PARAM_ALPHANUMEXT` in the web service structure and the no-JS
+  form (costume ids have hyphens).
+- Colours: `black` and `white` added to the body and accent colours (14 in all). The suits keep a
+  black suit and white shirt and tint only the tie with the accent colour. The aliens have long
+  fingers, the Kenney Mini characters stand straight, and the robot's lamps are larger and glow.
+- Designer preview: frames only the visible parts (the hidden head no longer crops device
+  costumes), fits wide costumes in the whole view, and reframes once a costume has loaded.
+- Designer: sticky preview offset by Boost's `--navbar-height`; the face-view framing includes the
+  name label; the zoom button is a toggle with `aria-pressed` (string `showface` removed).
+- `$plugin->version` 2026101001 (new strings, templates and the mod_vrroom dependency).

@@ -103,6 +103,18 @@ final class services_test extends \advanced_testcase {
     }
 
     /**
+     * A costume id (with hyphens) and the pirate hat go through both services.
+     */
+    public function test_save_costume(): void {
+        $this->resetAfterTest();
+        $this->setUser($this->getDataGenerator()->create_user());
+        $result = $this->save(['outfit' => 'mini-female-c', 'hat' => 'pirate']);
+        $this->assertSame('mini-female-c', $result['design']['outfit']);
+        $this->assertSame('pirate', $result['design']['hat']);
+        $this->assertSame($result['design'], $this->get()['design']);
+    }
+
+    /**
      * Invalid JSON saves the default design.
      */
     public function test_save_invalid_json(): void {

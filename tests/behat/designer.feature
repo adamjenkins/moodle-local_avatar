@@ -101,10 +101,13 @@ Feature: Users design their own VR avatar
     And I should not see "This browser cannot show the 3D preview"
     And I should see "Drag the preview, or use the left and right arrow keys, to turn it."
     And I should not see "Example context"
+    And the "aria-pressed" attribute of "Show the whole avatar" "button" should contain "false"
     When I press "Show the whole avatar"
-    Then "Show the face" "button" should exist
-    And I press "Show the face"
-    And "Show the whole avatar" "button" should exist
+    Then the "aria-pressed" attribute of "Show the whole avatar" "button" should contain "true"
+    And I press "Show the whole avatar"
+    And the "aria-pressed" attribute of "Show the whole avatar" "button" should contain "false"
+    When I set the field "Pirate captain" to "1"
+    Then "[data-region='canvas']" "css_element" should be visible
 
   @javascript
   Scenario: Choose a new hairstyle, a skin tone and a face, save and see them after a reload
@@ -143,3 +146,38 @@ Feature: Users design their own VR avatar
     And the field "No hair" matches value ""
     And the field "Purple" in the "Hair colour" "fieldset" matches value "1"
     And the field "Purple" in the "Body colour" "fieldset" matches value ""
+
+  @javascript
+  Scenario: Choose a costume and the pirate hat, save and see them kept after a reload
+    Given I log in as "student1"
+    And I visit "/local/avatar/index.php"
+    Then I should see "Costume"
+    And I should see "Pirates"
+    And I should see "Computers"
+    And I should see "by Ian MacGillivray, CC BY 3.0"
+    And the field "No costume" matches value "1"
+    When I set the field "Pirate captain" to "1"
+    # The pirate hat's label also holds its credit line, so it is found by its id.
+    And I set the field "local-avatar-hat-pirate" to "1"
+    And I press "Save"
+    And I should see "Your avatar was saved." in the "[data-region='status']" "css_element"
+    And I reload the page
+    Then the field "Pirate captain" matches value "1"
+    And the field "No costume" matches value ""
+    And the field "local-avatar-hat-pirate" matches value "1"
+    When I set the field "Laptop" to "1"
+    And I press "Save"
+    And I should see "Your avatar was saved." in the "[data-region='status']" "css_element"
+    And I reload the page
+    Then the field "Laptop" matches value "1"
+    And the field "Pirate captain" matches value ""
+
+  Scenario: Without JavaScript a costume is saved and kept
+    Given I log in as "student1"
+    And I visit "/local/avatar/index.php"
+    When I set the field "Mini woman C" to "1"
+    And I press "Save"
+    Then I should see "Your avatar was saved."
+    And the field "Mini woman C" matches value "1"
+    And I should see "Credits for the costume models"
+    And I should see "Blocky Characters (character-a)"

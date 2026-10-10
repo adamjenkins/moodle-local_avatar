@@ -13,8 +13,9 @@
 }
 
 /*
- * Side by side on wider screens, the preview stays in view while the choices scroll. In Boost the
- * page scrolls inside #page, under the navbar, so a small top offset is enough.
+ * Side by side on wider screens, the preview stays in view while the choices scroll. The page
+ * scrolls under Boost's fixed navbar, so the preview sticks below it: Boost gives its height as
+ * the CSS variable --navbar-height (theme/boost/scss/moodle/navbar.scss, 60px).
  */
 @media (min-width: 768px) {
     .local-avatar-layout {
@@ -23,7 +24,7 @@
 
     .local-avatar-preview {
         position: sticky;
-        top: 1rem;
+        top: calc(var(--navbar-height, 60px) + 1rem);
         flex: 0 1 40%;
         align-self: flex-start;
     }
@@ -114,4 +115,93 @@
 .local-avatar-status {
     min-height: 1.5rem;
     margin-top: 0.5rem;
+}
+
+/* Costumes: a grid of thumbnails that wraps, two or more to a row even on a phone. */
+
+.local-avatar-costumecategory {
+    margin: 0.75rem 0 0;
+}
+
+.local-avatar-costumelegend {
+    margin-bottom: 0.4rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.local-avatar-costumegrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(6.5rem, 1fr));
+    gap: 0.5rem;
+}
+
+.local-avatar-costume {
+    position: relative;
+}
+
+.local-avatar-costume-input {
+    position: absolute;
+    top: 0.4rem;
+    left: 0.4rem;
+    width: 1.1rem;
+    height: 1.1rem;
+    margin: 0;
+}
+
+.local-avatar-costume-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    padding: 0.4rem 0.3rem 0.35rem;
+    border: 2px solid var(--bs-border-color, #dee2e6);
+    border-radius: 0.5rem;
+    background: var(--bs-body-bg, #fff);
+    text-align: center;
+    cursor: pointer;
+}
+
+.local-avatar-costume-label:hover {
+    border-color: var(--bs-secondary, #6a737b);
+}
+
+.local-avatar-costume-input:checked + .local-avatar-costume-label {
+    border-color: var(--bs-primary, #0f6cbf);
+    background: var(--bs-primary-bg-subtle, #e7f0f9);
+}
+
+.local-avatar-costume-input:focus-visible + .local-avatar-costume-label {
+    outline: 3px solid var(--bs-primary, #0f6cbf);
+    outline-offset: 2px;
+}
+
+.local-avatar-costume-thumb {
+    display: block;
+    width: 100%;
+    max-width: 96px;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    object-fit: contain;
+}
+
+.local-avatar-costume-name {
+    margin-top: 0.25rem;
+    font-size: 0.85rem;
+    line-height: 1.2;
+}
+
+.local-avatar-credit {
+    display: block;
+    font-size: 0.75rem;
+    line-height: 1.2;
+    color: var(--bs-secondary-color, #6a737b);
+}
+
+.local-avatar-credits {
+    margin-top: 0.75rem;
+}
+
+.local-avatar-credits ul {
+    margin: 0.5rem 0 0;
+    padding-left: 1.25rem;
 }

@@ -43,7 +43,7 @@ final class design_test extends \advanced_testcase {
         'beard' => 'goatee',
         'glasses' => true,
         'hat' => 'sunhat',
-        'outfit' => 'none',
+        'outfit' => 'suit-tie',
         'picture' => true,
     ];
 
@@ -95,7 +95,7 @@ final class design_test extends \advanced_testcase {
                 $this->assertSame($value, design::clean([$key => $value])[$key], "{$key}={$value}");
             }
         }
-        $this->assertCount(12, design::COLOURS);
+        $this->assertCount(14, design::COLOURS);
         $this->assertCount(10, design::HAIRCOLOURS);
         $this->assertCount(9, design::SKINS);
         $this->assertCount(14, design::HAIRSTYLES);
@@ -103,6 +103,24 @@ final class design_test extends \advanced_testcase {
         $this->assertSame(design::HAIRCOLOURS, array_keys(design::HAIRSWATCHES));
         // Every skin tone but "match" (the body colour) has a swatch.
         $this->assertSame(array_values(array_diff(design::SKINS, ['match'])), array_keys(design::SKINSWATCHES));
+    }
+
+    /**
+     * Black and white are body and accent colours (a black suit with a white or black tie), with a
+     * swatch each, after the first twelve so the palette order of older designs is unchanged.
+     */
+    public function test_black_and_white_colours(): void {
+        $choices = design::choices();
+        foreach (['color', 'accent'] as $key) {
+            $this->assertSame(['black', 'white'], array_slice($choices[$key], -2), $key);
+        }
+        $this->assertSame('black', design::clean(['color' => 'black', 'accent' => 'black'])['color']);
+        $this->assertSame('black', design::clean(['color' => 'black', 'accent' => 'black'])['accent']);
+        $this->assertSame('white', design::clean(['accent' => 'white'])['accent']);
+        $this->assertMatchesRegularExpression('/^#[0-9a-f]{6}$/', design::SWATCHES['black']);
+        $this->assertMatchesRegularExpression('/^#[0-9a-f]{6}$/', design::SWATCHES['white']);
+        $this->assertSame('Black', get_string('colour_black', 'local_avatar'));
+        $this->assertSame('White', get_string('colour_white', 'local_avatar'));
     }
 
     /**
@@ -125,7 +143,8 @@ final class design_test extends \advanced_testcase {
         $this->assertSame(['none', 'thin', 'thick', 'arched'], $choices['brows']);
         $this->assertSame(['none', 'small', 'round', 'pointed'], $choices['nose']);
         $this->assertSame(['none', 'stubble', 'moustache', 'goatee', 'full'], $choices['beard']);
-        $this->assertSame(['none'], $choices['outfit']);
+        $this->assertSame(array_merge(['none'], costumes::outfit_ids()), $choices['outfit']);
+        $this->assertSame(['none', 'cap', 'beanie', 'sunhat', 'pirate'], $choices['hat']);
         $this->assertContains('ears', design::FLAGS);
     }
 
@@ -159,13 +178,22 @@ final class design_test extends \advanced_testcase {
     }
 
     /**
-     * "outfit" is reserved for costumes: only "none" is kept, anything else is dropped.
+     * "outfit" keeps "none" and the ids of the shipped costumes of kind body or device; a hat model,
+     * a category or anything else is dropped.
      */
-    public function test_outfit_reserved(): void {
+    public function test_outfit_costumes(): void {
         $this->assertSame('none', design::clean(['outfit' => 'none'])['outfit']);
-        foreach (['pirate', 'sailor', 'suit', '', 'None', 1, true, ['none']] as $value) {
+        foreach (['pirate-captain', 'suit-tie', 'device-laptop', 'robot-screen', 'blocky-r', 'mini-female-f'] as $id) {
+            $this->assertSame($id, design::clean(['outfit' => $id])['outfit'], $id);
+            $this->assertSame($id, design::clean(json_encode(['outfit' => $id]))['outfit'], $id);
+        }
+        foreach (
+            ['pirate', 'sailor', 'suit', 'hat-pirate', 'Pirate-Captain', 'pirate-captain ', '../pirate-captain',
+                'blocky-z', '', 'None', 1, true, ['none']] as $value
+        ) {
             $this->assertSame('none', design::clean(['outfit' => $value])['outfit'], var_export($value, true));
         }
+        $this->assertSame('pirate', design::clean(['hat' => 'pirate'])['hat']);
     }
 
     /**

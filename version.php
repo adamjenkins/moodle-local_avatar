@@ -25,11 +25,12 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'local_avatar';
-$plugin->version = 2026101000;
+$plugin->version = 2026101001;
 $plugin->release = '0.1.0';
 $plugin->maturity = MATURITY_ALPHA;
 // Moodle 5.2.0 (the v5.2.0 tag's public/version.php: 2026042000.00).
 $plugin->requires = 2026042000;
 $plugin->supported = [502, 503];
-// The avatar_appearance hook and the shared avatar builder arrived in mod_vrroom 2026101000.
-$plugin->dependencies = ['mod_vrroom' => 2026101000];
+// The avatar_appearance hook and the shared avatar builder arrived in mod_vrroom 2026101000; the
+// costume assets (set_appearance()'s $assets, the builder's GLB costumes) in 2026101001.
+$plugin->dependencies = ['mod_vrroom' => 2026101001];

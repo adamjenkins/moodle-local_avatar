@@ -114,6 +114,33 @@ final class hook_listener_test extends \advanced_testcase {
     }
 
     /**
+     * A costume and the pirate hat reach the room as the addresses of their models; a design without
+     * them gives no assets.
+     */
+    public function test_costume_assets(): void {
+        design::save((int)$this->withpicture->id, ['color' => 'red', 'picture' => true, 'outfit' => 'pirate-captain',
+            'hat' => 'pirate']);
+        design::save((int)$this->haspictureless->id, ['outfit' => 'device-monitor']);
+        $hook = $this->hook();
+        hook_listener::avatar_appearance($hook);
+        $appearances = $hook->get_appearances();
+
+        $this->assertSame('pirate-captain', $appearances['peera']['appearance']['outfit']);
+        $this->assertSame('pirate', $appearances['peera']['appearance']['hat']);
+        $this->assertSame([
+            'outfit' => (new \moodle_url('/local/avatar/costumes/pirate-captain.glb'))->out(false),
+            'hat' => (new \moodle_url('/local/avatar/costumes/hat-pirate.glb'))->out(false),
+        ], $appearances['peera']['assets']);
+
+        $this->assertSame(
+            ['outfit' => (new \moodle_url('/local/avatar/costumes/device-monitor.glb'))->out(false)],
+            $appearances['peerd']['assets']
+        );
+        // A drawn hat (cap) and no costume: no assets.
+        $this->assertSame([], $appearances['peerb']['assets']);
+    }
+
+    /**
      * With the site setting off nobody gets a picture, but the designs still arrive.
      */
     public function test_no_pictures_when_not_allowed(): void {

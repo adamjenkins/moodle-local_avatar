@@ -18,3 +18,10 @@ First release.
   before), eyes, eyebrows, nose, ears and beards, and fourteen hairstyles in ten hair colours. The
   designer groups the choices under Head and face, Hair, Body and Extras. Designs saved earlier
   look the same.
+- Costumes: 44 ready-made costumes to wear instead of the standard body (pirates, a business suit
+  and a suit and tie in the accent colour, a sunflower and a cactus, two aliens, two robots, a
+  laptop, a computer screen, a television and a desktop computer that show your face on their
+  screen, and Kenney's Blocky and Mini characters), and a pirate hat. The designer shows them as a
+  grid of thumbnails under a new Costume heading, with the authors' credits.
+- Designer: the preview stays below the site's navigation bar while the page scrolls, the face
+  view keeps the name tag in view, and "Show the whole avatar" is a toggle button.

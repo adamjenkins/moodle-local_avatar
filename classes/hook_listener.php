@@ -16,6 +16,7 @@
 
 namespace local_avatar;
 
+use local_avatar\local\costumes;
 use local_avatar\local\design;
 
 /**
@@ -32,7 +33,9 @@ final class hook_listener {
      * mod_vrroom dispatches the hook while it builds the list of the people in one live room, so
      * the designs (and profile picture addresses) reach only the others in that room. People without
      * a saved design are left alone and keep the standard look. The profile picture is given only when
-     * the site allows it, the user chose it and the user has a picture worth showing.
+     * the site allows it, the user chose it and the user has a picture worth showing. A design that
+     * wears a costume, or a hat that is a costume model, also gives the addresses of those models
+     * (assets "outfit" and "hat", static files of this plugin).
      *
      * @param \mod_vrroom\hook\avatar_appearance $hook The hook.
      * @return void
@@ -69,7 +72,7 @@ final class hook_listener {
             $appearance = $designs[$userid];
             // The badge is shown only with a picture to show.
             $appearance['picture'] = $url !== '';
-            $hook->set_appearance((string)$peer['peerid'], $appearance, $url);
+            $hook->set_appearance((string)$peer['peerid'], $appearance, $url, costumes::assets_for($appearance));
         }
     }
 }
