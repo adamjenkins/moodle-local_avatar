@@ -3,12 +3,14 @@
 All notable changes to this plugin are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
-## [0.1.0] - Unreleased
+## [0.1.0] - 2026-10-11
 
-ALPHA. First release, Moodle 5.2 and 5.3, requires mod_vrroom 2026101001. Not yet tagged.
+ALPHA. First release, Moodle 5.2 and 5.3, requires mod_vrroom 2026101001.
 
 ### Added
 
+- camp registry listing (`.camp/listing.yml`) and release workflow
+  (`.github/workflows/camp-release.yml`).
 - `index.php` "My VR avatar" designer (template `local_vravatar/designer`, AMD `local_vravatar/designer`
   drawing the preview with `vrroomruntime_builtin/live/avatarmodel`), linked through
   `local_vravatar_myprofile_navigation()`.

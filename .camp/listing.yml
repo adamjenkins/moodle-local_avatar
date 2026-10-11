@@ -1,0 +1,26 @@
+# camp listing manifest: descriptive content for the plugin's page.
+# camp ingests this file at each tagged release.
+# Schema: https://camp-registry.org/schema/listing.schema.json
+name: VR avatar
+summary: Lets each user design the avatar that stands for them in VR room live rooms, from ready-made parts.
+description: |
+  VR avatar adds a "My VR avatar" page, linked from each user's profile,
+  where users design the avatar that stands for them in the live rooms of
+  VR room activities. The same avatar follows them into every live room on
+  the site.
+
+  The avatar is put together from ready-made parts (head, face, skin tone,
+  hair, beard, body, colours, glasses, hats and 44 costumes), with a turning
+  3D preview. Nothing is uploaded and there is no free text, so there is
+  nothing to moderate. The user's profile picture can show as a badge on the
+  face.
+
+  Requires VR room (mod_vrroom). Moodle 5.2 and 5.3. ALPHA.
+labels:
+  # Disclosure labels (RFC §4.7):
+  #   fully-free | freemium | paid-service | external-account
+  #   donation-supported | commercial-support-available
+  #   requires-core-patch (needs modifications to Moodle core to work)
+  - fully-free
+links:
+  issues: https://github.com/adamjenkins/moodle-local_vravatar/issues
