@@ -22,5 +22,12 @@ labels:
   #   donation-supported | commercial-support-available
   #   requires-core-patch (needs modifications to Moodle core to work)
   - fully-free
+screenshots:
+  - path: .camp/screenshots/01-designer.jpg
+    caption: 'The My VR avatar page: head, face, hair, colours and extras, with a turning 3D preview.'
+  - path: .camp/screenshots/02-costumes.jpg
+    caption: 'Costumes such as the suit and tie (Ian MacGillivray, CC BY 3.0) take the place of the body.'
+  - path: .camp/screenshots/03-live-room.jpg
+    caption: 'A designed avatar in a VR room live room, as another student sees it.'
 links:
   issues: https://github.com/adamjenkins/moodle-local_vravatar/issues
